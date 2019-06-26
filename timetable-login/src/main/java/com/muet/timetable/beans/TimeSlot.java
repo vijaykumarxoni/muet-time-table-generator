@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Where(clause = "active =1")
 @Entity
-@Table(name = "time_slot_daily")
+@Table(name = "time_slot")
 @EntityListeners(AuditingEntityListener.class)
 public class TimeSlot extends Bean implements Serializable  {
 	
