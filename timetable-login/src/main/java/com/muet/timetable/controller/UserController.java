@@ -44,7 +44,7 @@ public class UserController {
 
         securityDAO.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "redirect:/welcome";
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/login")
@@ -58,8 +58,8 @@ public class UserController {
         return "login-page";
     }
 
-    @GetMapping({"/", "/welcome"})
+    @GetMapping({"/", "/dashboard"})
     public String welcome(Model model) {
-        return "welcome";
+        return "dashboard";
     }
 }
