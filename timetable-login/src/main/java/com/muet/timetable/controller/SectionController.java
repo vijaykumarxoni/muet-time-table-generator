@@ -23,54 +23,54 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Department;
-import com.muet.timetable.beans.Semester;
-import com.muet.timetable.beans.Subject;
-import com.muet.timetable.beans.Teacher;
-import com.muet.timetable.daoImpl.DepartmentDAOImpl;
-import com.muet.timetable.daoImpl.SubjectDAOImpl;
-import com.muet.timetable.daoImpl.TeacherDAOImpl;
+import com.muet.timetable.beans.Section;
+import com.muet.timetable.daoImpl.BatchDAOImpl;
+import com.muet.timetable.daoImpl.SectionDAOImpl;
 
 @Controller
-@RequestMapping("/teacher")
-public class TeacherController {
+@RequestMapping("/section")
+public class SectionController {
+	
+	
+	@Autowired
+	SectionDAOImpl sectionDAOImpl;
+	
+	@Autowired
+	BatchDAOImpl batchDAOImpl;
 
-	
-	@Autowired
-	TeacherDAOImpl teacherDAOImpl;
-	
-	@Autowired
-	DepartmentDAOImpl deptDAOImpl;
 	
 	
 	@RequestMapping("")
 	public String DayPage(Model modele) {
-		return "teacher-page";
+		
+		return "section-page";
 	}
 
 	@PostMapping("/getall")
 	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
 		Pageable pageable = new PageRequest(page, 4, Direction.ASC, "id");
-		return ResponseEntity.ok(teacherDAOImpl.getAllRecords(pageable));
+		
+		return ResponseEntity.ok(sectionDAOImpl.getAllRecords(pageable));
 
 	}
 	
 	@PostMapping("/getList")
 	public ResponseEntity<?> getList() {
-		return ResponseEntity.ok(teacherDAOImpl.getAllRecords());
+		return ResponseEntity.ok(sectionDAOImpl.getAllRecords());
 
 	}
 
 	@PostMapping("/get")
-	public ResponseEntity<?> getOne(@ModelAttribute Teacher teacher, BindingResult bindingResult,
+	public ResponseEntity<?> getOne(@ModelAttribute Batch batch, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
 
-		System.out.println(teacherDAOImpl.getRecordById(teacher.getId()).toString());
-		return ResponseEntity.ok(teacherDAOImpl.getRecordById(teacher.getId()));
+		System.out.println(sectionDAOImpl.getRecordById(batch.getId()).toString());
+		return ResponseEntity.ok(sectionDAOImpl.getRecordById(batch.getId()));
 
 	}
 
 	@PostMapping("/save")
-	public ResponseEntity<?> save(@ModelAttribute Teacher teacher, BindingResult bindingResult,
+	public ResponseEntity<?> save(@ModelAttribute Section section, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
 		Date date3 = Calendar.getInstance().getTime();
 	    SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
@@ -84,50 +84,37 @@ public class TeacherController {
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
 	    }
-	    teacher.setCreatedAt(date);
-	    teacher.setUpdatedAt(date);
-	    teacher.setCreatedBy(0);
-	    teacher.setUpdatedBy(0);
-	    teacher.setActive(1);
-	    teacherDAOImpl.addRecord(teacher);
+		
+	    section.setCreatedAt(date);
+	    section.setUpdatedAt(date);
+	    section.setCreatedBy(0);
+	    section.setUpdatedBy(0);
+	    section.setActive(1);
+	    sectionDAOImpl.addRecord(section);
 		return ResponseEntity.ok("OK");
 
 	}
 
 	@PostMapping("/update")
-	public ResponseEntity<?> update(@ModelAttribute Teacher teacher, BindingResult bindingResult,
+	public ResponseEntity<?> update(@ModelAttribute Section section, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
-		Teacher updatedteacher = teacherDAOImpl.getRecordById(teacher.getId());
-		updatedteacher.setName(teacher.getName());
-		updatedteacher.setEmail(teacher.getEmail());
-		updatedteacher.setPassword(teacher.getPassword());
-		updatedteacher.setDesignation(teacher.getDesignation());
-		updatedteacher.setGender(teacher.getGender());
-		updatedteacher.setContact(teacher.getContact());
-		Department dept =deptDAOImpl.getRecordById(teacher.getDept().getId());
-		updatedteacher.setDept(dept);
-		teacherDAOImpl.updateRecord(updatedteacher);
+		Section updatedsection = sectionDAOImpl.getRecordById(section.getId());
+		updatedsection.setName(section.getName());
+		Batch batch =batchDAOImpl.getRecordById(section.getBatch().getId());
+		updatedsection.setBatch(batch);
+		sectionDAOImpl.updateRecord(updatedsection);
 		return ResponseEntity.ok("OK");
+
 	}
 
 	@PostMapping("/delete")
-	public ResponseEntity<?> delete(@ModelAttribute Teacher subject, BindingResult bindingResult,
+	public ResponseEntity<?> delete(@ModelAttribute Section section, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
-		Teacher deletedteacher = teacherDAOImpl.getRecordById(subject.getId());
-		teacherDAOImpl.deleteRecord(deletedteacher);
+		Section deletedsection = sectionDAOImpl.getRecordById(section.getId());
+		sectionDAOImpl.deleteRecord(deletedsection);
 		return ResponseEntity.ok("OK");
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 }

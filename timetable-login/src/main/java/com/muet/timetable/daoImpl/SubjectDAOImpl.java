@@ -59,4 +59,10 @@ public class SubjectDAOImpl implements SubjectDAO {
 		return (List<Subject>) subjectrepository.findAll();
 	}
 
+	@Override
+	public List<Subject> getAllRecordsBySemester(Long id) {
+		// TODO Auto-generated method stub
+		return (List<Subject>) subjectrepository.findAll();
+	}
+
 }

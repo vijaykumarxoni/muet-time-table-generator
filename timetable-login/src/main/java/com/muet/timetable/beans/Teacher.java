@@ -37,11 +37,9 @@ public class Teacher extends Bean{
 	@Column(name = "name")
 	private String name;
 
-	@NotBlank
 	@Column(name = "email")
 	private String email;
 
-	@NotBlank
 	@Column(name = "password")
 	private String password;
 
@@ -49,11 +47,9 @@ public class Teacher extends Bean{
 	@Column(name = "designation")
 	private String designation;
 
-	@NotBlank
 	@Column(name = "gender")
 	private String gender;
 
-	@NotBlank
 	@Column(name = "contact")
 	private String contact;
 

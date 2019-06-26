@@ -52,10 +52,27 @@ public class SubjectController {
 	public String DayPage(Model modele) {
 		return "subject-page";
 	}
+	
+	
+	public int getCreditHours(int semester_id,int dept_id) {
+		int count=0;
+	List<Subject>subjects=subjectDAOImpl.getAllRecords();
+	
+	for (Subject subject: subjects) {
+		count+=Integer.parseInt(subject.getCredit_hour());
+		//System.out.println("subjects: "+subject.getName());
+		
+	}
+	
+		return count;
+	}
 
 	@PostMapping("/getall")
 	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
 		Pageable pageable = new PageRequest(page, 4, Direction.DESC, "id");
+		
+		  System.out.println(getCreditHours(6,1));
+
 		return ResponseEntity.ok(subjectDAOImpl.getAllRecords(pageable));
 
 	}

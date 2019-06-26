@@ -45,6 +45,7 @@ function getSelectOptionsforbatch() {
 
 		url : 'department/getList',
 		type : 'post',
+		async:'false',
 		success : function(msg) {
 			var options = "";
 			options += "<option value='-1'>-- Department --</option>";

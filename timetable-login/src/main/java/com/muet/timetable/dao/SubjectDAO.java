@@ -14,6 +14,8 @@ public interface SubjectDAO {
 		
 		public Subject getRecordById(Long id);
 		
+		
+		
 		public Subject addRecord(Subject subject);
 		
 		public int updateRecord(Subject subject);
@@ -21,6 +23,8 @@ public interface SubjectDAO {
 		public int deleteRecord(Subject subject);
 		
 		public List<Subject> getAllRecords();
+		
+		public List<Subject> getAllRecordsBySemester(Long id);
 	
 	
 
