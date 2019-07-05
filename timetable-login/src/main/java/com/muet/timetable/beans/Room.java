@@ -43,8 +43,7 @@ public class Room extends Bean implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "dept_id",
-	referencedColumnName="id"
-			)
+	referencedColumnName="id")
 	private Department department;
 	
 	

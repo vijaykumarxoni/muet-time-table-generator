@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.muet.timetable.beans.Day;
 import com.muet.timetable.beans.TimeSlotDaily;
 
 public interface TimeSlotDailyDAO {
@@ -15,6 +16,8 @@ public interface TimeSlotDailyDAO {
 	public int updateRecord(TimeSlotDaily timeSlotDaily);
 	public int deleteRecord(TimeSlotDaily timeSlotDaily);
 	public List<TimeSlotDaily> getAllRecords();
+	public int gettimeSlotsForFriday();
+	public List<TimeSlotDaily> gettimeSlotsForRegular();
 
 	
 	

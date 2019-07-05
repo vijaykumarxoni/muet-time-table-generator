@@ -86,6 +86,19 @@ public class AssignSubjectController {
 		return ResponseEntity.ok(assignsubjectDAOImpl.getRecordById(assignsubject.getId()));
 
 	}
+	
+	
+	@PostMapping("/getbybatch")
+	public ResponseEntity<?> getByBatch(@ModelAttribute AssignSubject assignsubject, BindingResult bindingResult,
+			HttpServletRequest httpServletRequest) {
+		
+		System.out.println("batch: "+assignsubject.getBatch());
+		System.out.println("section: "+assignsubject.getSection());
+		
+		return ResponseEntity.ok(assignsubjectDAOImpl.getAllRecordsByBatchAndSection(assignsubject.getBatch(), assignsubject.getSection()));
+
+	}
+	
 
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@ModelAttribute AssignSubject assignsubject, BindingResult bindingResult,

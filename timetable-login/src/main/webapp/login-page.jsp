@@ -9,7 +9,6 @@
 <!doctype html>
 <html class="no-js " lang="en">
 
-<!-- Mirrored from thememakker.com/templates/oreo/university/html/sign-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 04 May 2019 10:02:35 GMT -->
 <head>
 <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">

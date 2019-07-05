@@ -63,9 +63,12 @@ public class SectionController {
 	@PostMapping("/get")
 	public ResponseEntity<?> getOne(@ModelAttribute Batch batch, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
+		
+		System.out.println("batch id: "+batch.getId());
 
-		System.out.println(sectionDAOImpl.getRecordById(batch.getId()).toString());
-		return ResponseEntity.ok(sectionDAOImpl.getRecordById(batch.getId()));
+		
+		System.out.println("batch name: "+sectionDAOImpl.getAllRecordsByBatch(batch).get(0).getName());
+		return ResponseEntity.ok(sectionDAOImpl.getAllRecordsByBatch(batch));
 
 	}
 

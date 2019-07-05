@@ -11,12 +11,13 @@ import org.springframework.stereotype.Service;
 
 import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Section;
+import com.muet.timetable.dao.SectionDAO;
 import com.muet.timetable.repository.BatchRepository;
 import com.muet.timetable.repository.SectionRepository;
 
 @Service
 @Transactional
-public class SectionDAOImpl {
+public class SectionDAOImpl implements SectionDAO{
 
 	@Autowired
 	SectionRepository sectionrepository;
@@ -54,6 +55,12 @@ public class SectionDAOImpl {
 	public List<Section> getAllRecords() {
 		// TODO Auto-generated method stub
 		return (List<Section>) sectionrepository.findAll();
+	}
+
+	@Override
+	public List<Section> getAllRecordsByBatch(Batch batch) {
+		// TODO Auto-generated method stub
+		return (List<Section>) sectionrepository.getSectionsByBatch(batch);
 	}
 
 	

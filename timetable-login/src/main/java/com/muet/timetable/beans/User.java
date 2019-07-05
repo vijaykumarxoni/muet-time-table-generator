@@ -1,11 +1,19 @@
 package com.muet.timetable.beans;
 
 import javax.persistence.*;
-import java.util.Set;
 
+import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.io.Serializable;
+import java.util.Set;
+@Where(clause = "active =1")
 @Entity
 @Table(name = "user")
-public class User {
+@EntityListeners(AuditingEntityListener.class)
+
+
+public class User extends Bean implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,9 +25,24 @@ public class User {
 
     private String email;
     
+    @ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "dept_id",
+	referencedColumnName="id")
+	private Department department;
+    
+    
+    
     
 
-    public String getEmail() {
+    public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public String getEmail() {
 		return email;
 	}
 

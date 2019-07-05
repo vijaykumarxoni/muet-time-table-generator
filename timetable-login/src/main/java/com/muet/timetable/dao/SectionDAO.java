@@ -23,5 +23,8 @@ public Page<Section> getAllRecords(Pageable pageable);
 	
 	public List<Section> getAllRecords();
 	
+	public List<Section> getAllRecordsByBatch(Batch batch);
+	
+	
 	
 }

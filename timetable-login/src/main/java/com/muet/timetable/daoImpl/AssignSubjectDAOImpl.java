@@ -10,12 +10,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.muet.timetable.beans.AssignSubject;
+import com.muet.timetable.beans.Batch;
+import com.muet.timetable.beans.Section;
+import com.muet.timetable.beans.Teacher;
+import com.muet.timetable.dao.AssignSubjectDAO;
 import com.muet.timetable.repository.AssignSubjectRepository;
 import com.muet.timetable.repository.BatchRepository;
 
 @Service
 @Transactional
-public class AssignSubjectDAOImpl {
+public class AssignSubjectDAOImpl implements AssignSubjectDAO{
 	
 	@Autowired
 	AssignSubjectRepository assignsubjectrepository;
@@ -54,6 +58,20 @@ public class AssignSubjectDAOImpl {
 	public List<AssignSubject> getAllRecords() {
 		// TODO Auto-generated method stub
 		return (List<AssignSubject>) assignsubjectrepository.findAll();
+	}
+
+	@Override
+	public List<AssignSubject> getAllRecordsByBatchAndSection(Batch batch, Section section) {
+		// TODO Auto-generated method stub
+		return  assignsubjectrepository.getAllRecordsByBatchAndSection(batch, section);
+	}
+
+	@Override
+	public List<AssignSubject> getAllRecordsByTeacher(Teacher teacher) {
+		// TODO Auto-generated method stub
+		
+		return  assignsubjectrepository.getAllRecordsByTeacher(teacher);
+		
 	}
 
 }

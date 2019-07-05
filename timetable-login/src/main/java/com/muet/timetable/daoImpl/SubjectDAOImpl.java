@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.muet.timetable.beans.Batch;
+import com.muet.timetable.beans.Department;
+import com.muet.timetable.beans.Semester;
 import com.muet.timetable.beans.Subject;
 import com.muet.timetable.dao.BatchDAO;
 import com.muet.timetable.dao.SubjectDAO;
@@ -64,5 +66,16 @@ public class SubjectDAOImpl implements SubjectDAO {
 		// TODO Auto-generated method stub
 		return (List<Subject>) subjectrepository.findAll();
 	}
+
+	
+
+	@Override
+	public int getCreaditHour(Department department, Semester semester) {
+		// TODO Auto-generated method stub
+		return  subjectrepository.getCredit_hours(department,semester);
+	}
+	
+	
+	
 
 }

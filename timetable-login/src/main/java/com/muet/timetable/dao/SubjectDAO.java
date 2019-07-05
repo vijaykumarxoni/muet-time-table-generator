@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.muet.timetable.beans.Department;
+import com.muet.timetable.beans.Semester;
 import com.muet.timetable.beans.Subject;
 
 public interface SubjectDAO {
@@ -25,6 +27,9 @@ public interface SubjectDAO {
 		public List<Subject> getAllRecords();
 		
 		public List<Subject> getAllRecordsBySemester(Long id);
+		
+		
+		public int getCreaditHour(Department department, Semester semester);
 	
 	
 

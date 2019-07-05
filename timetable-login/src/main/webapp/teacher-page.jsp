@@ -126,7 +126,10 @@ function show(page) {
 
 					for (x in data) {
 						rows += "<tr>";
+						
+						
 						rows += "<td>" + data[x].id + "</td>";
+						
 						rows += "<td>" + data[x].name + "</td>";
 						rows += "<td>" + data[x].email + "</td>";
 						rows += "<td>" + data[x].password + "</td>";
@@ -142,6 +145,8 @@ function show(page) {
 						rows += "<button class='btn btn-icon btn-neutral btn-icon-mini' onclick='deleteRow("
 								+ data[x].id
 								+ ")'><i class='zmdi zmdi-delete'></i></button>";
+								
+								
 
 						rows += "</td>";
 
@@ -411,7 +416,9 @@ $(document).ready(function() {
 										<table class="table table-hover m-b-0 c_list">
 											<thead>
 												<tr>
+												
 													<th>#</th>
+													
 													<th>Name</th>
 													<th>Email</th>
 													<th>Password</th>

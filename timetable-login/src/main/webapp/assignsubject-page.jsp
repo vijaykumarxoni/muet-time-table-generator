@@ -154,6 +154,8 @@
 											<thead>
 												<tr>
 													<th>#</th>
+													
+													<th>Send Notification</th>
 													<th>Subject</th>
 													<th>Teacher</th>
 													<th>Batch</th>
@@ -476,6 +478,9 @@
 								}
 								rows += "<tr>";
 								rows += "<td>" + data[x].id + "</td>";
+								
+								rows += "<td><a href='notification?assign_id="+data[x].id+"'><i class='material-icons'>chat</i></button></a></td>";
+								
 								rows += "<td>" + data[x].subject.name + " ("
 										+ type + ")</td>";
 								rows += "<td>" + data[x].teacher.name + "</td>";

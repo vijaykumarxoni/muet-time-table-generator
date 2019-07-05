@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.muet.timetable.beans.Day;
 import com.muet.timetable.beans.TimeSlotDaily;
 import com.muet.timetable.dao.TimeSlotDailyDAO;
 import com.muet.timetable.dao.TimeSlotDailyDAO;
@@ -57,6 +58,18 @@ public class TimeSlotDailyDAOImpl implements TimeSlotDailyDAO {
 	public List<TimeSlotDaily> getAllRecords() {
 		// TODO Auto-generated method stub
 		return (List<TimeSlotDaily>) TimeSlotDailyRepository.findAll();
+	}
+
+	@Override
+	public int gettimeSlotsForFriday() {
+		// TODO Auto-generated method stub
+		return TimeSlotDailyRepository.getTimeSlotsForFriday();
+	}
+
+	@Override
+	public List<TimeSlotDaily> gettimeSlotsForRegular() {
+		// TODO Auto-generated method stub
+		return TimeSlotDailyRepository.getTimeSlotsForRegular();
 	}
 	
 	
