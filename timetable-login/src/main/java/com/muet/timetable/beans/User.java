@@ -2,18 +2,13 @@ package com.muet.timetable.beans;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.util.Set;
-@Where(clause = "active =1")
+
 @Entity
 @Table(name = "user")
-@EntityListeners(AuditingEntityListener.class)
-
-
-public class User extends Bean implements Serializable{
+public class User extends Bean  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,14 +20,14 @@ public class User extends Bean implements Serializable{
 
     private String email;
     
+    @Column(name="admin_role")
+    private String adminRole;
+    
+    
     @ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "dept_id",
-	referencedColumnName="id")
+	@JoinColumn(name = "dept_id",referencedColumnName="id")
 	private Department department;
-    
-    
-    
-    
+	
 
     public Department getDepartment() {
 		return department;
@@ -95,4 +90,14 @@ public class User extends Bean implements Serializable{
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
+	public String getAdminRole() {
+		return adminRole;
+	}
+
+	public void setAdminRole(String adminRole) {
+		this.adminRole = adminRole;
+	}
+    
+    
 }

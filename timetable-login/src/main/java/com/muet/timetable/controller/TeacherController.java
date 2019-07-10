@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,9 +25,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Department;
+import com.muet.timetable.beans.Role;
 import com.muet.timetable.beans.Semester;
 import com.muet.timetable.beans.Subject;
 import com.muet.timetable.beans.Teacher;
+import com.muet.timetable.beans.User;
+import com.muet.timetable.dao.RoleDAO;
+import com.muet.timetable.dao.UserDAO;
 import com.muet.timetable.daoImpl.DepartmentDAOImpl;
 import com.muet.timetable.daoImpl.SubjectDAOImpl;
 import com.muet.timetable.daoImpl.TeacherDAOImpl;
@@ -42,9 +48,21 @@ public class TeacherController {
 	DepartmentDAOImpl deptDAOImpl;
 	
 	
+    @Autowired
+    private UserDAO userDAO;
+
+    @Autowired
+    private RoleDAO roleDAO;
+
+		
+	
 	@RequestMapping("")
-	public String DayPage(Model modele) {
+	public String TeacherPage(Model modele) {
 		return "teacher-page";
+	}
+	@RequestMapping("/dashboard")
+	public String TeacherDashboard(Model modele) {
+		return "teacher-dashboard";
 	}
 
 	@PostMapping("/getall")
@@ -90,6 +108,25 @@ public class TeacherController {
 	    teacher.setUpdatedBy(0);
 	    teacher.setActive(1);
 	    teacherDAOImpl.addRecord(teacher);
+	    
+	    
+	    User teacherUser=new User();
+	    teacherUser.setEmail(teacher.getEmail());
+	    teacherUser.setUsername(teacher.getEmail());
+	    teacherUser.setPassword(teacher.getPassword());
+	    teacherUser.setPasswordConfirm(teacher.getPassword());
+	    teacherUser.setAdminRole("Teacher");
+	    teacherUser.setDepartment(teacher.getDept());
+	    Set<Role> roles=new HashSet<Role>();
+	    Role role=roleDAO.getRecordById(2L);
+	    
+	    roles.add(role);
+	    
+	   userDAO.save(teacherUser);
+	    
+	    
+	    
+	    
 		return ResponseEntity.ok("OK");
 
 	}

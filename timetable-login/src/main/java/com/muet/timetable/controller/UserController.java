@@ -1,12 +1,7 @@
 package com.muet.timetable.controller;
 
 
-
 import java.security.Principal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.User;
 import com.muet.timetable.dao.SecurityDAO;
 import com.muet.timetable.dao.UserDAO;
 import com.muet.timetable.daoImpl.DepartmentDAOImpl;
 import com.muet.timetable.validator.UserValidator;
-import com.muet.timetable.beans.Department;
-import com.muet.timetable.beans.Teacher;
 
 @Controller
 public class UserController {
@@ -34,6 +28,7 @@ public class UserController {
 
     @Autowired
     private UserValidator userValidator;
+
     
     @Autowired
     private DepartmentDAOImpl departmentDAOImpl;
@@ -51,6 +46,7 @@ public class UserController {
         return "registration-page";
     }
 
+
     @PostMapping("/registration")
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
         userValidator.validate(userForm, bindingResult);
@@ -58,10 +54,9 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "registration-page";
         }
-        
 
-        userForm.setActive(1);
         userDAO.save(userForm);
+        System.out.println("Login By Xoni");
 
         securityDAO.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
@@ -70,20 +65,31 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
+    	
+        System.out.println("Login By Soni /Login ");
+
         if (error != null)
             model.addAttribute("error", "Your username and password is invalid.");
 
         if (logout != null)
             model.addAttribute("message", "You have been logged out successfully.");
 
+        
+        
         return "login-page";
     }
 
     @GetMapping({"/", "/dashboard"})
-    public String welcome(Model model) {
-    	
-    	
-
-        return "dashboard";
+    public String welcome(Model model,Principal principal) {
+    
+    	User user=userDAO.findByUsername(principal.getName());
+         String role=user.getAdminRole();  
+   
+    if(role.equalsIgnoreCase("Admin")) {	
+        return "dashboard";}
+    else if (role.equalsIgnoreCase("Teacher")) {
+    return "teacher-dashboard";}
+    
+    return "dashboard";
     }
 }

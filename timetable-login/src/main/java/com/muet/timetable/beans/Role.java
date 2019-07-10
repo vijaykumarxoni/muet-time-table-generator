@@ -1,11 +1,16 @@
 package com.muet.timetable.beans;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Where;
+
+import java.io.Serializable;
 import java.util.Set;
 
+@Where(clause = "active =1")
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role  extends Bean implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
