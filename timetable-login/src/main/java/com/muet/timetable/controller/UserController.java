@@ -88,7 +88,7 @@ public class UserController {
     if(role.equalsIgnoreCase("Admin")) {	
         return "dashboard";}
     else if (role.equalsIgnoreCase("Teacher")) {
-    return "teacher-dashboard";}
+    return "teacherdashboard-page";}
     
     return "dashboard";
     }
