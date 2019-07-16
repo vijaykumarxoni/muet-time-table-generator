@@ -17,8 +17,10 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.stereotype.Component;
 
 
+@Component
 @Where(clause = "active =1")
 @Entity
 @Table(name = "assign_subject")

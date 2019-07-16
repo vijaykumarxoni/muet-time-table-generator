@@ -3,16 +3,19 @@ package com.muet.timetable.beans;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +25,9 @@ import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Where(clause = "active =1")
 @Entity
@@ -43,8 +49,24 @@ public class Batch extends Bean implements Serializable {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "dept_id",referencedColumnName="id")
 	private Department dept;
-
 	
+	
+	
+	@JsonManagedReference
+	 @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Section> sections ;
+	
+	
+	
+	
+
+	public Set<Section> getSections() {
+		return sections;
+	}
+
+	public void setSections(Set<Section> sections) {
+		this.sections = sections;
+	}
 
 	@NotBlank
 	@Column(name = "year")
@@ -85,9 +107,11 @@ public class Batch extends Bean implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Batch [id=" + id + ", name=" + name + ", dept=" + dept + ", year=" + year + "]";
+		return "Batch [id=" + id + ", name=" + name + ", dept=" + dept + ", sections=" + sections + ", year=" + year
+				+ "]";
 	}
-		
+
+	
 	
 
 }

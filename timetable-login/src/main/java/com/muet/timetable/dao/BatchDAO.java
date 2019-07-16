@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Day;
+import com.muet.timetable.beans.Department;
 
 public interface BatchDAO {
 
@@ -22,6 +23,10 @@ public interface BatchDAO {
 	public int deleteRecord(Batch batch);
 	
 	public List<Batch> getAllRecords();
+	
+	public List<Batch> getAllRecordsByDept(Department department);
+	
+	
 	
 	
 }

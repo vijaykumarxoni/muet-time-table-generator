@@ -17,6 +17,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 @Where(clause = "active = 1")
@@ -31,8 +34,9 @@ public class Section extends Bean implements Serializable{
 	@Column(name = "id")
 	private Long   id;
 
+	@JsonBackReference
 	@NotNull
-	@ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "batch_id",referencedColumnName="id")
 	private Batch batch;
 	
@@ -63,7 +67,8 @@ public class Section extends Bean implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+
 
 
 }

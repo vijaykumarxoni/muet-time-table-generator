@@ -2,6 +2,7 @@ package com.muet.timetable.controller;
 
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Department;
+import com.muet.timetable.beans.Section;
+import com.muet.timetable.beans.Sidebar;
 import com.muet.timetable.beans.User;
 import com.muet.timetable.dao.SecurityDAO;
 import com.muet.timetable.dao.UserDAO;
+import com.muet.timetable.daoImpl.BatchDAOImpl;
 import com.muet.timetable.daoImpl.DepartmentDAOImpl;
+import com.muet.timetable.daoImpl.SectionDAOImpl;
 import com.muet.timetable.validator.UserValidator;
 
 @Controller
@@ -32,6 +38,18 @@ public class UserController {
     
     @Autowired
     private DepartmentDAOImpl departmentDAOImpl;
+    
+    @Autowired
+    private BatchDAOImpl batchDAOImpl;
+    
+    @Autowired
+    private SectionDAOImpl sectionDAOImpl;
+    
+    @Autowired
+    private Sidebar sidebar;
+    
+    
+    
 
     
     @GetMapping("/registration")
@@ -83,9 +101,20 @@ public class UserController {
     public String welcome(Model model,Principal principal) {
     
     	User user=userDAO.findByUsername(principal.getName());
-         String role=user.getAdminRole();  
+         String role=user.getAdminRole();
+         
+         
    
-    if(role.equalsIgnoreCase("Admin")) {	
+    if(role.equalsIgnoreCase("Admin")) {
+    	
+    	List<Batch> batchs = batchDAOImpl.getAllRecordsByDept(user.getDepartment());
+    //	List<Section> sections = sectionDAOImpl.getAllRecordsByBatch(batch);
+    	
+    	
+    	
+    	
+    	model.addAttribute("mylist",sidebar.getMyList());
+    	model.addAttribute("batchs",batchs);
         return "dashboard";}
     else if (role.equalsIgnoreCase("Teacher")) {
     return "teacherdashboard-page";}

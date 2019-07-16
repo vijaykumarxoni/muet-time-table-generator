@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Day;
+import com.muet.timetable.beans.Department;
 import com.muet.timetable.dao.BatchDAO;
 import com.muet.timetable.repository.BatchRepository;
 import com.muet.timetable.repository.DayRepository;
@@ -55,6 +56,12 @@ public class BatchDAOImpl implements BatchDAO {
 	public List<Batch> getAllRecords() {
 		// TODO Auto-generated method stub
 		return (List<Batch>) batchrepository.findAll();
+	}
+
+	@Override
+	public List<Batch> getAllRecordsByDept(Department department) {
+		// TODO Auto-generated method stub
+		return (List<Batch>) batchrepository.getAllRecordsByDept(department);
 	}
 
 }

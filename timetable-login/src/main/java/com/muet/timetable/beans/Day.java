@@ -34,26 +34,7 @@ public class Day extends Bean implements Serializable{
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "created_at")
-	@Temporal(TemporalType.TIMESTAMP)
-	@LastModifiedDate
-	private Date createdAt;
 	
-
-	@Column(name = "updated_at")
-	@UpdateTimestamp
-	private Date updatedAt;
-	
-	@Column(name = "created_by")
-	private Integer createdBy;
-	
-	@Column(name = "updated_by")
-	private Integer updatedBy;
-
-	
-	@Column(name = "active")
-	private Integer active;
-
 
 	public Long getId() {
 		return id;

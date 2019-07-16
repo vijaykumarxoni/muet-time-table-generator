@@ -60,6 +60,8 @@ public class DayController {
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@ModelAttribute Day day, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
+		
+		
 		day.setActive(1);
 		dayDAOImpl.addRecord(day);
 		return ResponseEntity.ok("OK");
