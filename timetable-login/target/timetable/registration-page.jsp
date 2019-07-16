@@ -9,7 +9,6 @@
 <!doctype html>
 <html class="no-js " lang="en">
 
-<!-- Mirrored from thememakker.com/templates/oreo/university/html/sign-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 04 May 2019 10:02:35 GMT -->
 <head>
 <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -89,6 +88,18 @@
                     <form:input type="password" path="passwordConfirm" class="form-control"
                                 placeholder="Confirm your password"></form:input>
                     <form:errors path="passwordConfirm"></form:errors>
+                </div>
+            </spring:bind>
+             <spring:bind path="department">
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                  <form:select path="department" var="dept"  class="form-control" style="background: #8f8e8f">
+      				<form:option value="0" label="--Select Department"/>
+      				
+      				<form:options items="${departmentList}" itemValue="id" itemLabel="name" class="form-control"  />
+      				
+      				
+ 				 </form:select>
+					
                 </div>
             </spring:bind>
 

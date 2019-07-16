@@ -43,12 +43,11 @@ function getSelectOptionsforbatch() {
 
 	$.ajax({
 
-		url : 'department/getList',
+		url : 'batch/getList',
 		type : 'post',
-		async:'false',
 		success : function(msg) {
 			var options = "";
-			options += "<option value='-1'>-- Department --</option>";
+			options += "<option value='-1'>-- Batch --</option>";
 
 			for (x in msg) {
 				options += "<option value='"+msg[x].id+"'>" + msg[x].name
@@ -56,7 +55,7 @@ function getSelectOptionsforbatch() {
 
 			}
 
-			$("#selectdept").html(options);
+			$("#selectbatch").html(options);
 		}
 
 	});
@@ -65,19 +64,19 @@ function getSelectOptionsforbatch() {
 
 
 function getRow(id) {
-	$('#updatebatchBtn').show();
-	$('#addbatchBtn').hide();
+	$('#updatesectionBtn').show();
+	$('#addsectionBtn').hide();
 	rowId = id;
 	$.ajax({
 
-		url : 'batch/get',
+		url : 'section/get',
 		type : 'post',
 		data : 'id=' + id,
 		success : function(msg) {
 
 			$('#name').val(msg.name);
 			$('#year').val(msg.year);
-			$("#selectdept").val(msg.dept.id).change();
+			$("#selectbatch").val(msg.batch.id).change();
 
 		}
 
@@ -90,7 +89,7 @@ function deleteRow(id) {
 	alert("The id is "+id);
 	$.ajax({
 
-		url : 'batch/delete',
+		url : 'section/delete',
 		type : 'post',
 		data : 'id=' + id,
 		
@@ -106,7 +105,7 @@ function deleteRow(id) {
  	
 function show(page) {
 	$.ajax({
-				url : 'batch/getall',
+				url : 'section/getall',
 				type : 'post',
 				data : 'page=' + page,
 
@@ -120,9 +119,8 @@ function show(page) {
 					for (x in data) {
 						rows += "<tr>";
 						rows += "<td>" + data[x].id + "</td>";
+						rows += "<td>" + data[x].batch.name + "</td>";
 						rows += "<td>" + data[x].name + "</td>";
-						rows += "<td>" + data[x].dept.name + "</td>";
-						rows += "<td>" + data[x].year + "</td>";
 
 						rows += "<td>";
 						rows += "<button class='btn btn-icon btn-neutral btn-icon-mini' onclick='getRow("
@@ -138,7 +136,7 @@ function show(page) {
 
 					}
 
-					$("#batchTblBody").html(rows);
+					$("#sectionTblBody").html(rows);
 					pages += "<li class='page-item'><a class='page-link' href='javascript:show("
 							+ parseInt(currentPage - 1)
 							+ ");'><i class='zmdi zmdi-arrow-left'></i></a></li>";
@@ -179,27 +177,25 @@ function show(page) {
 $(document).ready(function() {
 	getSelectOptionsforbatch();
 	show(0);
-	$('#updatebatchBtn').hide();
-	$('#addbatchBtn').click(function() {
+	$('#updatesectionBtn').hide();
+	$('#addsectionBtn').click(function() {
 		var name = $('#name').val();
-		var deptid = $('#selectdept').val();
-		var year = $('#year').val();
+		var batchid = $('#selectbatch').val();
 		
 		
 		$.ajax({
 
-			url : 'batch/save',
+			url : 'section/save',
 			type : 'post',
 			data : {
 				
 				'name' : name,
-				'dept.id' : deptid,
-				"year" : year,
+				'batch.id' : batchid,
 				
 			},
 			success : function(msg) {
 				$('#name').val("");
-				$('#year').val("");
+
 				
 				show(0);
 
@@ -210,27 +206,26 @@ $(document).ready(function() {
 		}); //ajax end
 	}); //addbtnclick end
 	
-	$('#updatebatchBtn').click(function() {
+	$('#updatesectionBtn').click(function() {
 
 		var name = $('#name').val();
-		var dept = $("#selectdept").val();
-		var year = $("#year").val();
+		var batch = $("#selectbatch").val();
+	//	alert(name+" "+batch+" "+rowId)
 		$.ajax({
 
-			url : 'batch/update',
+			url : 'section/update',
 			type : 'post',
 			data : {
 				'id' : rowId,
 				'name' : name,
-				'year' : year,
-				"dept.id" : dept,
+				"batch.id" : batch,
 
 			},
 			success : function(msg) {
 				$('#name').val("");
 				show(0);
-				$('#updateDeptBtn').hide();
-				$('#addDeptBtn').show();
+				$('#updatesectionBtn').hide();
+				$('#addsectionBtn').show();
 
 				$('#defaultModal').modal('toggle');
 
@@ -241,12 +236,11 @@ $(document).ready(function() {
 	});//updatebtnclick end
 
 	$('#showAddModel').click(function() {
-		$('#updatebatchBtn').hide();
-		$('#addbatchBtn').show();
+		$('#updatesectionBtn').hide();
+		$('#addsectionBtn').show();
 		getSelectOptionsforbatch();
         $('#name').val("");
-		$('#year').val("");
-		$("#selectdept").val('-1').change();
+		$("#selectbatch").val('-1').change();
 
 	});
 
@@ -290,7 +284,7 @@ $(document).ready(function() {
 			<div class="row">
 				<div class="col-lg-7 col-md-6 col-sm-12">
 					<h2>
-						Batches <small>Welcome to MUET Time Table</small>
+						Section <small>Welcome to MUET Time Table</small>
 					</h2>
 				</div>
 				<div class="col-lg-5 col-md-6 col-sm-12">
@@ -298,7 +292,7 @@ $(document).ready(function() {
 						<li class="breadcrumb-item"><a href="index.html"><i
 								class="zmdi zmdi-home"></i> MUET</a></li>
 						<li class="breadcrumb-item"><a href="javascript:void(0);">App</a></li>
-						<li class="breadcrumb-item active">Batches</li>
+						<li class="breadcrumb-item active">Section</li>
 					</ul>
 				</div>
 			</div>
@@ -371,14 +365,12 @@ $(document).ready(function() {
 											<thead>
 												<tr>
 													<th>#</th>
-													<th>Name</th>
-													<th>Department</th>
-													<th>Year</th>
-
+													<th>Batch</th>
+													<th>Section</th>
 													<th data-breakpoints="xs">Action</th>
 												</tr>
 											</thead>
-											<tbody id="batchTblBody">
+											<tbody id="sectionTblBody">
 
 
 											</tbody>
@@ -408,14 +400,14 @@ $(document).ready(function() {
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="title" id="defaultModalLabel">Add Batches</h4>
+					<h4 class="title" id="defaultModalLabel">Add Section</h4>
 				</div>
 				<div class="modal-body">
 
 						<div class="col-sm-12">
 						<div class="form-group">
 					   
-							<select class="form-control " id="selectdept">
+							<select class="form-control " id="selectbatch">
 							
 							</select>
 							
@@ -426,28 +418,22 @@ $(document).ready(function() {
 					<div class="col-sm-12">
 						<div class="form-group">
 							<input type="text" value="" name="name" id="name"
-								placeholder="Batch Name" class="form-control">
+								placeholder="Section Name" class="form-control">
 						</div>
 					</div>
 					
 					
-					<div class="col-sm-12">
-						<div class="form-group">
-							<input type="text" value="" name="year" id="year"
-								placeholder="Year of Admission" class="form-control">
-						</div>
-					</div>
-
+					
 
 
 				</div>
 				<div class="modal-footer">
 
 
-					<button type="button" id="addbatchBtn"
+					<button type="button" id="addsectionBtn"
 						class="btn btn-default btn-round waves-effect">Save</button>
 						
-					<button type="button" id="updatebatchBtn"
+					<button type="button" id="updatesectionBtn"
 						class="btn btn-default btn-round waves-effect">Update</button>
 						
 					<button type="button" class="btn btn-danger waves-effect"

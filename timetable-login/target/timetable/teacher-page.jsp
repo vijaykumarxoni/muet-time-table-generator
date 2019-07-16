@@ -45,6 +45,7 @@ function getSelectOptions() {
 
 		url : 'department/getList',
 		type : 'post',
+		async:'false',
 		success : function(msg) {
 			var options = "";
 			options += "<option value='-1'>-- Department --</option>";
@@ -81,6 +82,10 @@ function getRow(id) {
 			$('#designation').val(msg.designation);
 			$('#contact').val(msg.contact);
 			$("#selectdept").val(msg.dept.id).change();
+			$("#designationSelect").val(msg.designation).change();
+			$("#gender").val(msg.gender).change();
+
+			
 
 		}
 
@@ -90,7 +95,6 @@ function getRow(id) {
 
 
 function deleteRow(id) {
-	alert("The id is "+id);
 	$.ajax({
 
 		url : 'teacher/delete',
@@ -122,7 +126,10 @@ function show(page) {
 
 					for (x in data) {
 						rows += "<tr>";
+						
+						
 						rows += "<td>" + data[x].id + "</td>";
+						
 						rows += "<td>" + data[x].name + "</td>";
 						rows += "<td>" + data[x].email + "</td>";
 						rows += "<td>" + data[x].password + "</td>";
@@ -138,6 +145,8 @@ function show(page) {
 						rows += "<button class='btn btn-icon btn-neutral btn-icon-mini' onclick='deleteRow("
 								+ data[x].id
 								+ ")'><i class='zmdi zmdi-delete'></i></button>";
+								
+								
 
 						rows += "</td>";
 
@@ -191,8 +200,8 @@ $(document).ready(function() {
 		var name = $('#name').val();
 		var deptid = $('#selectdept').val();
 		var password = $('#password').val();
-		var designation = $('#designation').val();
-		var gender = $("#gender:checked").val();
+		var designation = $('#designationSelect').val();
+		var gender = $("#gender").val();
 		var contact = $('#contact').val();
 		var email = $('#email').val();
 		
@@ -220,6 +229,8 @@ $(document).ready(function() {
 		$("#gender:checked").val("");
 		$('#contact').val("");
 		$('#selectdept').val('-1').change()	
+				$('#designationSelect').val('-1').change()	
+
 		show(0);
 
 		$('#defaultModal').modal('toggle');
@@ -234,11 +245,10 @@ $(document).ready(function() {
 		var name = $('#name').val();
 		var deptid = $('#selectdept').val();
 		var password = $('#password').val();
-		var designation = $('#designation').val();
-		var gender = $("#gender:checked").val();
+		var designation = $('#designationSelect').val();
+		var gender = $("#gender").val();
 		var contact = $('#contact').val();
 		var email = $('#email').val();
-		alert(name+" "+deptid+" "+password+" "+designation+" "+gender+" "+contact+" "+email)
 		$.ajax({
 
 			url : 'teacher/update',
@@ -279,6 +289,10 @@ $(document).ready(function() {
 		$("#gender:checked").val("");
 		$('#contact').val("");
 		$("#selectdept").val('-1').change();
+		$("#designationSelect").val('-1').change();
+		$("#gender").val('-1').change();
+
+		
 
 	});
 
@@ -402,7 +416,9 @@ $(document).ready(function() {
 										<table class="table table-hover m-b-0 c_list">
 											<thead>
 												<tr>
+												
 													<th>#</th>
+													
 													<th>Name</th>
 													<th>Email</th>
 													<th>Password</th>
@@ -467,6 +483,24 @@ $(document).ready(function() {
 					</div>
 					
 					
+					<div class="col-sm-12"   >
+						<div class="form-group">
+					 <select class="form-control " id="designationSelect"  name="designation">
+					   
+							<option value="-1">-- Designation --</option>
+								<option value="Lecturer">Lecturer</option>   
+							<option value="Assistant Professor">Assistant Professor</option>   
+							<option value="Associate  Professor">Associate  Professor</option>  
+							<option value="Professor">Professor</option>  
+						    <option value="Lab Assistant">Lab  Assistant</option>   
+						    <option value="Teaching Assistant">Teaching Assistant</option>   
+					         <option value="Instructor">Instructor</option>   
+							 
+							 
+								
+							</select>
+						</div>
+					</div>
 					<div class="col-sm-12">
 						<div class="form-group">
 							<input type="text" value="" name="email" id="email"
@@ -484,20 +518,21 @@ $(document).ready(function() {
 					
 					
 					
-					<div class="col-sm-12">
+					<div class="col-sm-12"   >
 						<div class="form-group">
-							<input type="text" value="" name="designation" id="designation"
-								placeholder="Enter Designation" class="form-control">
+					 <select class="form-control " id="gender"  name="gender">
+					   
+							<option value="-1">-- Gender --</option>
+								<option value="Male">Male</option>   
+							<option value="Female">Female</option>   
+							 
+								
+							</select>
 						</div>
 					</div>
 					
-					<div class="col-sm-14 form-check-inline">
-						<div class="form-group">
-						       <label>Gender</label>
-							  <label ><input type="radio" name="gender" id="gender" class="form-check-input"  value="male">Male</label> 
-                              <label><input type="radio" name="gender" id="gender" class="form-check-input"  value="female">Female</label>
-						</div>
-					</div>
+					
+					
 					
 					<div class="col-sm-12">
 						<div class="form-group">

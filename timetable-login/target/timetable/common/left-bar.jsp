@@ -35,7 +35,27 @@
 							</div>
 						</li>
 						<li class="header">MAIN</li>
-						<li class="active open"><a href="index.html"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+						<li class="active open"><a href=""><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+						
+						<c:if test="${not empty batchs}">
+						<li class="header">Batches</li>
+    					<c:forEach items="${batchs}" var="batchs">
+    					<li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts-alt"></i><span>${batchs.name}</span> </a>
+    					<ul class="ml-menu">
+    						<c:forEach items="${batchs.sections}" var="sections">
+						
+                       				    <li><a href="timetable?batch=${batchs.id}&section=${sections.id}">${sections.name}</a></li>
+                       		</c:forEach>
+                        </ul>
+                    </li>
+       						
+						</c:forEach>
+						</c:if>
+							
+							
+						
+								<!-- 							
+							
 							<li><a href="teacher" ><i
 								class="zmdi zmdi-accounts-alt"></i><span>Teachers</span> </a>
 						</li>
@@ -45,7 +65,7 @@
 					
 						
 						
-	
+
 						<li class="header">Others</li>
 						
 						<li><a href="department" ><i
@@ -169,6 +189,9 @@
 									</div>
 								</li>
 							</ul></li>
+							
+							
+							 -->
 					</ul>
 				</div>
 			</div>
