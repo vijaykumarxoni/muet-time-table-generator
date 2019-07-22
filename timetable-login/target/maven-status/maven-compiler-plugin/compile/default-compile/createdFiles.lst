@@ -63,6 +63,7 @@ com\muet\timetable\daoImpl\BatchDAOImpl.class
 com\muet\timetable\dao\SecurityDAO.class
 com\muet\timetable\beans\Room.class
 com\muet\timetable\beans\TimeTableWithoutRoom.class
+TeacherDashboardController.class
 com\muet\timetable\daoImpl\SectionDAOImpl.class
 com\muet\timetable\beans\Department.class
 com\muet\timetable\controller\TeacherController.class
@@ -80,7 +81,6 @@ com\muet\timetable\controller\BatchController.class
 com\muet\timetable\WebSecurityConfig.class
 com\muet\timetable\controller\SemesterController.class
 com\muet\timetable\repository\NotificationResponseRepository.class
-com\muet\timetable\controller\TeacherDashboardController.class
 com\muet\timetable\beans\Day.class
 com\muet\timetable\validator\UserValidator.class
 com\muet\timetable\controller\AssignSubjectController.class

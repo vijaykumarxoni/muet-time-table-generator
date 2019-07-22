@@ -26,9 +26,9 @@ public class SubjectDAOImpl implements SubjectDAO {
 	@Autowired
 	SubjectRepository subjectrepository;
 
-	public Page<Subject> getAllRecords(Pageable pageable) {
+	public Page<Subject> getAllRecords(Department department,Pageable pageable) {
 		// TODO Auto-generated method stub
-		return subjectrepository.findAll(pageable);
+		return subjectrepository.getAllRecordsByDept(department, pageable);
 	}
 
 	public Subject getRecordById(Long id) {
@@ -73,6 +73,12 @@ public class SubjectDAOImpl implements SubjectDAO {
 	public int getCreaditHour(Department department, Semester semester) {
 		// TODO Auto-generated method stub
 		return  subjectrepository.getCredit_hours(department,semester);
+	}
+
+	@Override
+	public List<Subject> getAllRecordsByDept(Department department) {
+		// TODO Auto-generated method stub
+		return subjectrepository.getAllRecordsByDept(department);
 	}
 	
 	

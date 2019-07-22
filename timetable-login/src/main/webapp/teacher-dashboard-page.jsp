@@ -1,6 +1,9 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+    
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -25,7 +28,7 @@
 	rel="stylesheet" />
 
 <link rel="stylesheet" href="assets/css/color_skins.css">
-<script src="/assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.min.js"></script>
 </head>
 <body class="theme-blush">
 	<!-- Page Loader -->
@@ -98,7 +101,6 @@
                             <table class="table table-hover m-b-0">
                                 <thead>
                                     <tr>
-                                        <th>S.no</th>
                                         <th>Subject Name</th>
                                         <th>Subject Type</th>
                                         <th>Batch</th>
@@ -108,15 +110,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                      					<c:forEach items="${assign_subjects}" var="assignSubj">
+                                  
+                                  
                                     <tr>
-                                        <td><span class="list-name">01</span></td>
-                                        <td>Software Project Managment</td>
-                                        <td>Practical</td>
-                                        <td>16SW</td>
-                                        <td>Section-II</td>		
-                                        <td>6th Semester</td>     
-                                        <td>Department Of Software Engineering</td>
+                                        <td>${assignSubj.subject.name}</td>
+                                        <td>${assignSubj.subject.type}</td>
+                                        <td>${assignSubj.batch.name}</td>
+                                        <td>${assignSubj.section.name}</td>		
+                                        <td>${assignSubj.semester.name}</td>     
+                                        <td>${assignSubj.subject.dept.name}</td>
                                     </tr>
+                                    
+                                    						</c:forEach>
+                                    
                                 </tbody>
                             </table>
                         </div>

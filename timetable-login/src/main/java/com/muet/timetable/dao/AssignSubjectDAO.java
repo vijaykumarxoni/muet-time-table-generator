@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.muet.timetable.beans.AssignSubject;
 import com.muet.timetable.beans.Batch;
+import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.Section;
 import com.muet.timetable.beans.Teacher;;
 
@@ -29,6 +30,6 @@ public Page<AssignSubject> getAllRecords(Pageable pageable);
 	
 	public List<AssignSubject> getAllRecordsByTeacher(Teacher teacher);
 	
-	
+
 	
 }

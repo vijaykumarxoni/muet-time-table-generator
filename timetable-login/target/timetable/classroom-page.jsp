@@ -31,35 +31,13 @@
 <script type="text/javascript">
 	var rowId = "";
 
-	function getSelectOptions() {
-
-		$.ajax({
-
-			url : 'department/getList',
-			type : 'post',
-			success : function(msg) {
-				var options = "";
-				options += "<option value='-1'>-- Department --</option>";
-
-				for (x in msg) {
-					options += "<option value='"+msg[x].id+"'>" + msg[x].name
-							+ "</option>";
-
-				}
-
-				$("#deptSelect").html(options);
-			}
-
-		});
-
-	}
-
 	function getRow(id) {
 		$('#updateRoomBtn').show();
 		$('#addRoomBtn').hide();
 		rowId = id;
 		$.ajax({
 
+			
 			url : '/classroom/get',
 			type : 'post',
 			data : 'id=' + id,
@@ -67,8 +45,8 @@
 
 				$('#name').val(msg.name);
 				$("#roomtype").val(msg.type).change();
-				$("#deptSelect").val(msg.department.id).change();
 
+				
 			}
 
 		});
@@ -160,14 +138,12 @@
 	}
 
 	$(document).ready(function() {
-		getSelectOptions();
 		show(0);
 		$('#updateRoomBtn').hide();
 
 		$('#addRoomBtn').click(function() {
 			var name = $('#name').val();
 			var roomtype = $("#roomtype").val();
-			var dept = $("#deptSelect").val();
 
 			$.ajax({
 
@@ -177,13 +153,11 @@
 				data : {
 					'name' : name,
 					'type' : roomtype,
-					"department.id" : dept,
 
 				},
 				success : function(msg) {
 					$('#name').val("");
 					$('#roomtype').val(-1);
-					$('#deptSelect').val(-1);
 
 					show(0);
 
@@ -197,7 +171,6 @@
 		$('#updateRoomBtn').click(function() {
 
 			var name = $('#name').val();
-			var dept = $("#deptSelect").val();
 			var roomtype = $("#roomtype").val();
 			$.ajax({
 
@@ -207,14 +180,12 @@
 					'id' : rowId,
 					'name' : name,
 					'type' : roomtype,
-					"department.id" : dept,
 
 				},
 				success : function(msg) {
 
 					$('#name').val("");
 					$('#roomtype').val(-1);
-					$('#deptSelect').val(-1);
 
 					$('#updateRoomBtn').hide();
 					$('#addRoomBtn').show();
@@ -229,13 +200,11 @@
 		});
 
 		$('#showAddModel').click(function() {
-			getSelectOptions();
 			$('#updateRoomBtn').hide();
 			$('#addRoomBtn').show();
 			$('#name').val("");
 			$('#roomtype').val(-1).change();
 			;
-			$('#deptSelect').val(-1).change();
 			;
 
 		});
@@ -400,15 +369,7 @@
 				</div>
 				<div class="modal-body">
 
-					<div class="col-sm-12">
-						<div class="form-group">
 
-							<select class="form-control " id="deptSelect">
-								<option value="">-- Department --</option>
-
-							</select>
-						</div>
-					</div>
 
 					<div class="col-sm-12">
 						<div class="form-group">

@@ -1,5 +1,6 @@
 package com.muet.timetable.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,41 +41,49 @@ import com.muet.timetable.daoImpl.TeacherDAOImpl;
 @RequestMapping("/teacher")
 public class TeacherController {
 
-	
 	@Autowired
 	TeacherDAOImpl teacherDAOImpl;
-	
+
 	@Autowired
 	DepartmentDAOImpl deptDAOImpl;
-	
-	
-    @Autowired
-    private UserDAO userDAO;
 
-    @Autowired
-    private RoleDAO roleDAO;
+	@Autowired
+	private UserDAO userDAO;
 
-		
-	
+	@Autowired
+	private RoleDAO roleDAO;
+
 	@RequestMapping("")
 	public String TeacherPage(Model modele) {
 		return "teacher-page";
 	}
+
 	@RequestMapping("/dashboard")
 	public String TeacherDashboard(Model modele) {
-		return "teacher-dashboard";
+		return "teacher-dashboard-page";
 	}
 
 	@PostMapping("/getall")
-	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page, Principal principal) {
 		Pageable pageable = new PageRequest(page, 4, Direction.ASC, "id");
-		return ResponseEntity.ok(teacherDAOImpl.getAllRecords(pageable));
+
+		Department department = userDAO.findByUsername(principal.getName()).getDepartment();
+
+		return ResponseEntity.ok(teacherDAOImpl.getAllRecords(department, pageable));
 
 	}
-	
+
+	@PostMapping("/getListByDept")
+	public ResponseEntity<?> getListByDepartment(Principal principal) {
+		User user = userDAO.findByUsername(principal.getName());
+		Department department = deptDAOImpl.getRecordById(user.getDepartment().getId());
+		return ResponseEntity.ok(teacherDAOImpl.getAllRecordsByDepartment(department));
+
+	}
+
 	@PostMapping("/getList")
-	public ResponseEntity<?> getList() {
-		return ResponseEntity.ok(teacherDAOImpl.getAllRecords());
+	public ResponseEntity<?> getList(@RequestParam(name = "deptId") long deptId) {
+		return ResponseEntity.ok(teacherDAOImpl.getAllRecordsByDepartment(deptDAOImpl.getRecordById(deptId)));
 
 	}
 
@@ -89,51 +98,41 @@ public class TeacherController {
 
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@ModelAttribute Teacher teacher, BindingResult bindingResult,
-			HttpServletRequest httpServletRequest) {
-		Date date3 = Calendar.getInstance().getTime();
-	    SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+			HttpServletRequest httpServletRequest, Principal principal) {
 
-	    java.sql.Date date = null;
+		teacher.setCreatedBy(0);
+		teacher.setUpdatedBy(0);
+		teacher.setActive(1);
+		teacherDAOImpl.addRecord(teacher);
 
-	    try {
-	        date =new java.sql.Date(df.parse(df.format(date3)).getTime());
-	        System.out.println(date);
-	    } catch (ParseException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    }
-	    teacher.setCreatedAt(date);
-	    teacher.setUpdatedAt(date);
-	    teacher.setCreatedBy(0);
-	    teacher.setUpdatedBy(0);
-	    teacher.setActive(1);
-	    teacherDAOImpl.addRecord(teacher);
-	    
-	    
-	    User teacherUser=new User();
-	    teacherUser.setEmail(teacher.getEmail());
-	    teacherUser.setUsername(teacher.getEmail());
-	    teacherUser.setPassword(teacher.getPassword());
-	    teacherUser.setPasswordConfirm(teacher.getPassword());
-	    teacherUser.setAdminRole("Teacher");
-	    teacherUser.setDepartment(teacher.getDept());
-	    Set<Role> roles=new HashSet<Role>();
-	    Role role=roleDAO.getRecordById(2L);
-	    
-	    roles.add(role);
-	    
-	   userDAO.save(teacherUser);
-	    
-	    
-	    
-	    
+		Department department = userDAO.findByUsername(principal.getName()).getDepartment();
+		Teacher lastAddedTeacher = teacherDAOImpl.getRecordByNameDeptEmailContact(teacher.getName(), department,
+				teacher.getEmail(), teacher.getContact());
+
+		teacher.setDept(department);
+		User teacherUser = new User();
+		teacherUser.setTeacher(lastAddedTeacher);
+		teacherUser.setTeacher(teacher);
+		teacherUser.setEmail(teacher.getEmail());
+		teacherUser.setUsername(teacher.getEmail());
+		teacherUser.setPassword(teacher.getPassword());
+		teacherUser.setPasswordConfirm(teacher.getPassword());
+		teacherUser.setAdminRole("Teacher");
+		teacherUser.setDepartment(department);
+		Set<Role> roles = new HashSet<Role>();
+		Role role = roleDAO.getRecordById(2L);
+		roles.add(role);
+		teacherUser.setRoles(roles);
+
+		userDAO.save(teacherUser);
+
 		return ResponseEntity.ok("OK");
 
 	}
 
 	@PostMapping("/update")
 	public ResponseEntity<?> update(@ModelAttribute Teacher teacher, BindingResult bindingResult,
-			HttpServletRequest httpServletRequest) {
+			HttpServletRequest httpServletRequest, Principal principal) {
 		Teacher updatedteacher = teacherDAOImpl.getRecordById(teacher.getId());
 		updatedteacher.setName(teacher.getName());
 		updatedteacher.setEmail(teacher.getEmail());
@@ -141,7 +140,7 @@ public class TeacherController {
 		updatedteacher.setDesignation(teacher.getDesignation());
 		updatedteacher.setGender(teacher.getGender());
 		updatedteacher.setContact(teacher.getContact());
-		Department dept =deptDAOImpl.getRecordById(teacher.getDept().getId());
+		Department dept = userDAO.findByUsername(principal.getName()).getDepartment();
 		updatedteacher.setDept(dept);
 		teacherDAOImpl.updateRecord(updatedteacher);
 		return ResponseEntity.ok("OK");
@@ -155,16 +154,5 @@ public class TeacherController {
 		return ResponseEntity.ok("OK");
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

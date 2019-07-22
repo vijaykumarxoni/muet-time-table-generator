@@ -13,7 +13,8 @@ public interface BatchDAO {
 
 	
 	public Page<Batch> getAllRecords(Pageable pageable);
-	
+	public Page<Batch> getAllRecords(Department department,Pageable pageable);
+
 	public Batch getRecordById(Long id);
 	
 	public Batch addRecord(Batch batch);
@@ -25,6 +26,8 @@ public interface BatchDAO {
 	public List<Batch> getAllRecords();
 	
 	public List<Batch> getAllRecordsByDept(Department department);
+	
+	
 	
 	
 	

@@ -1,5 +1,6 @@
 package com.muet.timetable.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,11 +29,14 @@ import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.Faculty;
 import com.muet.timetable.beans.Semester;
 import com.muet.timetable.beans.Subject;
+import com.muet.timetable.beans.User;
+import com.muet.timetable.dao.UserDAO;
 import com.muet.timetable.daoImpl.BatchDAOImpl;
 import com.muet.timetable.daoImpl.DayDAOImpl;
 import com.muet.timetable.daoImpl.DepartmentDAOImpl;
 import com.muet.timetable.daoImpl.SemesterDAOImpl;
 import com.muet.timetable.daoImpl.SubjectDAOImpl;
+import com.muet.timetable.daoImpl.UserDAOImpl;
 
 @Controller
 @RequestMapping("/subject")
@@ -47,6 +51,11 @@ public class SubjectController {
 	
 	@Autowired
 	DepartmentDAOImpl deptDAOImpl;
+	
+	@Autowired
+	UserDAOImpl userDAO;
+	
+	
 
 	@RequestMapping("")
 	public String DayPage(Model modele) {
@@ -57,21 +66,31 @@ public class SubjectController {
 	
 
 	@PostMapping("/getall")
-	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page, Principal principal) {
 		Pageable pageable = new PageRequest(page, 4, Direction.DESC, "id");
-		
-
-		return ResponseEntity.ok(subjectDAOImpl.getAllRecords(pageable));
+		Department department=userDAO.findByUsername(principal.getName()).getDepartment(); 		
+		return ResponseEntity.ok(subjectDAOImpl.getAllRecords(department,pageable));
 
 	}
 	
+
+	
 	@PostMapping("/getList")
-	public ResponseEntity<?> getList() {
-		ModelAndView model = new ModelAndView("batch-page");
-		return ResponseEntity.ok(subjectDAOImpl.getAllRecords());
+	public ResponseEntity<?> getList(@RequestParam(name = "deptId") long  deptId) {
+		return ResponseEntity.ok(subjectDAOImpl.getAllRecordsByDept(deptDAOImpl.getRecordById(deptId)));
 
 	}
 
+	@PostMapping("/getListByDept")
+	public ResponseEntity<?> getListByDepartment(Principal principal) {
+		User user=userDAO.findByUsername(principal.getName());
+		Department department=deptDAOImpl.getRecordById(user.getDepartment().getId());
+		return ResponseEntity.ok(subjectDAOImpl.getAllRecordsByDept(department));
+
+	}
+
+	
+	
 	@PostMapping("/get")
 	public ResponseEntity<?> getOne(@ModelAttribute Batch batch, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
@@ -83,7 +102,7 @@ public class SubjectController {
 
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@ModelAttribute Subject subject, BindingResult bindingResult,
-			HttpServletRequest httpServletRequest) {
+			HttpServletRequest httpServletRequest, Principal principal) {
 		Date date3 = Calendar.getInstance().getTime();
 	    SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
 
@@ -96,6 +115,9 @@ public class SubjectController {
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
 	    }
+		Department department=userDAO.findByUsername(principal.getName()).getDepartment(); 		
+
+	    subject.setDept(department);
 	    subject.setCreatedAt(date);
 	    subject.setUpdatedAt(date);
 	    subject.setCreatedBy(0);
@@ -108,12 +130,12 @@ public class SubjectController {
 
 	@PostMapping("/update")
 	public ResponseEntity<?> update(@ModelAttribute Subject subject, BindingResult bindingResult,
-			HttpServletRequest httpServletRequest) {
+			HttpServletRequest httpServletRequest,Principal principal) {
 		Subject updatedsubject = subjectDAOImpl.getRecordById(subject.getId());
 		updatedsubject.setName(subject.getName());
 		updatedsubject.setCode(subject.getCode());
 		updatedsubject.setCredit_hour(subject.getCredit_hour());
-		Department dept =deptDAOImpl.getRecordById(subject.getDept().getId());
+		Department dept=userDAO.findByUsername(principal.getName()).getDepartment();
 		Semester semester = semesterDAOImpl.getRecordById(subject.getSemester().getId());
 		updatedsubject.setDept(dept);
 		updatedsubject.setType(subject.getType());

@@ -18,6 +18,9 @@ public interface AssignSubjectRepository extends PagingAndSortingRepository<Assi
 	   List<AssignSubject> getAllRecordsByBatchAndSection (@Param("batch") Batch batch ,@Param("section") Section section);
 	 
 	 
-	 @Query("SELECT e FROM AssignSubject e WHERE e.teacher=:teacher ")
+	 @Query("SELECT e FROM AssignSubject e WHERE e.teacher=:teacher order by e.id desc ")
 	   List<AssignSubject> getAllRecordsByTeacher (@Param("teacher") Teacher teacher );
+	 
+	 
+	 
 }

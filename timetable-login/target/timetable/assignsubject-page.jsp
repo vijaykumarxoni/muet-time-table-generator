@@ -202,6 +202,26 @@
 					<div class="col-sm-12">
 						<div class="form-group">
 
+							<select class="form-control " id="selectDept">
+
+							</select>
+
+						</div>
+					</div>
+					
+					<div class="col-sm-12">
+						<div class="form-group">
+
+							<select class="form-control " id="selectbatch">
+<option value='-1'>-- Batch --</option>
+							</select>
+
+						</div>
+					</div>
+
+					<div class="col-sm-12">
+						<div class="form-group">
+
 							<select class="form-control " id="selectsubject">
 
 							</select>
@@ -219,15 +239,6 @@
 						</div>
 					</div>
 
-					<div class="col-sm-12">
-						<div class="form-group">
-
-							<select class="form-control " id="selectbatch">
-
-							</select>
-
-						</div>
-					</div>
 
 					<div class="col-sm-12">
 						<div class="form-group">
@@ -277,6 +288,34 @@
 
 	<script type="text/javascript">
 		var rowId = "";
+		
+		function getSelectOptionsforDepartment() {
+
+			$.ajax({
+
+				url : 'department/getList',
+				type : 'post',
+
+				async : false,
+
+				success : function(msg) {
+					var options = "";
+					options += "<option value='-1'>-- Department --</option>";
+
+					for (x in msg) {
+						options += "<option value='"+msg[x].id+"'>"
+								+ msg[x].name + "</option>";
+
+					}
+
+					$("#selectDept").html(options);
+				}
+
+			});
+
+		}
+
+		
 
 		function getSelectOptionsforsubject() {
 
@@ -303,19 +342,23 @@
 					}
 
 					$("#selectsubject").html(options);
-					getSelectOptionsforteacher();
+					getSelectOptionsforteacher(16);
 				}
 
 			});
 
 		}
+		
+		
 
-		function getSelectOptionsforteacher() {
+		function getSelectOptionsforteacher(deptId) {
 
 			$.ajax({
 
 				url : 'teacher/getList',
 				type : 'post',
+				data : 'deptId=' + deptId,
+
 				async : false,
 
 				success : function(msg) {
@@ -329,7 +372,6 @@
 					}
 
 					$("#selectteacher").html(options);
-					getSelectOptionsForSection();
 				}
 
 			});
@@ -354,24 +396,22 @@
 					}
 
 					$("#selectSection").html(options);
-					getSelectOptionsforbatch();
 				}
 
 			});
 
 		}
 
-		function getSelectOptionsforbatch() {
+		function getSelectOptionsforbatch(deptId) {
 
 			$.ajax({
 
 				url : 'batch/getList',
-				type : 'post',
-				async : false,
+				method : 'POST',
+				data : {'deptId':deptId}  ,
 
 				success : function(msg) {
 					var options = "";
-					options += "<option value='-1'>-- Batch --</option>";
 
 					for (x in msg) {
 						options += "<option value='"+msg[x].id+"'>"
@@ -380,7 +420,6 @@
 					}
 
 					$("#selectbatch").html(options);
-					getSelectOptionsforsemester();
 				}
 
 			});
@@ -541,7 +580,48 @@
 
 		$(document).ready(
 				function() {
+					
+					
+					
+					
+					
+					 getSelectOptionsforDepartment();
+
 					getSelectOptionsforsubject();
+					
+					
+					
+					
+					
+					
+					$( "#selectDept" ).on("change",function(){
+						var departmentId=$("#selectDept").val();
+						$.ajax({
+
+							url : 'batch/getList',
+							method : "POST",
+							data : {'deptId':departmentId}  ,
+
+							success : function(msg) {
+								var options = "";
+
+								for (x in msg) {
+									options += "<option value='"+msg[x].id+"'>"
+											+ msg[x].name + "</option>";
+
+								}
+
+								$("#selectbatch").html(options);
+							}
+
+						});
+
+					
+					
+					
+					}); 
+					
+					
 
 					show(0);
 					$('#updateassignsubjectBtn').hide();

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.muet.timetable.beans.AssignSubject;
 import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.Section;
@@ -18,6 +20,7 @@ import com.muet.timetable.beans.Sidebar;
 import com.muet.timetable.beans.User;
 import com.muet.timetable.dao.SecurityDAO;
 import com.muet.timetable.dao.UserDAO;
+import com.muet.timetable.daoImpl.AssignSubjectDAOImpl;
 import com.muet.timetable.daoImpl.BatchDAOImpl;
 import com.muet.timetable.daoImpl.DepartmentDAOImpl;
 import com.muet.timetable.daoImpl.SectionDAOImpl;
@@ -41,6 +44,12 @@ public class UserController {
     
     @Autowired
     private BatchDAOImpl batchDAOImpl;
+    
+    
+    @Autowired
+    private AssignSubjectDAOImpl assignSubjectDAO;
+    
+    
     
     @Autowired
     private SectionDAOImpl sectionDAOImpl;
@@ -98,8 +107,7 @@ public class UserController {
     }
 
     @GetMapping({"/", "/dashboard"})
-    public String welcome(Model model,Principal principal) {
-    
+    public String  welcome(Model model,Principal principal) {
     	User user=userDAO.findByUsername(principal.getName());
          String role=user.getAdminRole();
          
@@ -117,7 +125,10 @@ public class UserController {
     	model.addAttribute("batchs",batchs);
         return "dashboard";}
     else if (role.equalsIgnoreCase("Teacher")) {
-    return "teacherdashboard-page";}
+         List<AssignSubject> asList=assignSubjectDAO.getAllRecordsByTeacher(user.getTeacher());
+         if(asList.size()!=0) {
+    	model.addAttribute("assign_subjects",asList);}
+    return "teacher-dashboard-page";}
     
     return "dashboard";
     }

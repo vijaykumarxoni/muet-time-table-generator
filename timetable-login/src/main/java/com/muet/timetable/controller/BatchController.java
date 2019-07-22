@@ -1,5 +1,6 @@
 package com.muet.timetable.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,9 +27,11 @@ import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Day;
 import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.Faculty;
+import com.muet.timetable.beans.User;
 import com.muet.timetable.daoImpl.BatchDAOImpl;
 import com.muet.timetable.daoImpl.DayDAOImpl;
 import com.muet.timetable.daoImpl.DepartmentDAOImpl;
+import com.muet.timetable.daoImpl.UserDAOImpl;
 
 @Controller
 @RequestMapping("/batch")
@@ -37,6 +40,9 @@ public class BatchController {
 
 	@Autowired
 	BatchDAOImpl batchDAOImpl;
+
+	@Autowired
+	UserDAOImpl userDAO;
 
 	
 	@Autowired
@@ -50,17 +56,24 @@ public class BatchController {
 	}
 
 	@PostMapping("/getall")
-	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
+	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page,Principal principal) {
 		Pageable pageable = new PageRequest(page, 4, Direction.ASC, "id");
-		
-		return ResponseEntity.ok(batchDAOImpl.getAllRecords(pageable));
+		Department department=userDAO.findByUsername(principal.getName()).getDepartment();
+        
+		return ResponseEntity.ok(batchDAOImpl.getAllRecords(department,pageable));
 
 	}
 	
 	@PostMapping("/getList")
-	public ResponseEntity<?> getList() {
-		ModelAndView model = new ModelAndView("batch-page");
-		return ResponseEntity.ok(batchDAOImpl.getAllRecords());
+	public ResponseEntity<?> getList(@RequestParam(name = "deptId") long  deptId) {
+		return ResponseEntity.ok(batchDAOImpl.getAllRecordsByDept(deptDAOImpl.getRecordById(deptId)));
+
+	}
+	@PostMapping("/getListByDept")
+	public ResponseEntity<?> getListByDepartment(Principal principal) {
+		User user=userDAO.findByUsername(principal.getName());
+		Department department=deptDAOImpl.getRecordById(user.getDepartment().getId());
+		return ResponseEntity.ok(batchDAOImpl.getAllRecordsByDept(department));
 
 	}
 
@@ -68,7 +81,6 @@ public class BatchController {
 	public ResponseEntity<?> getOne(@ModelAttribute Batch batch, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
 
-		System.out.println(batchDAOImpl.getRecordById(batch.getId()).toString());
 		return ResponseEntity.ok(batchDAOImpl.getRecordById(batch.getId()));
 
 	}

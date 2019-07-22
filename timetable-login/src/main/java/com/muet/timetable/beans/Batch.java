@@ -1,4 +1,4 @@
-package com.muet.timetable.beans;
+ package com.muet.timetable.beans;
 
 
 import java.io.Serializable;
@@ -53,7 +53,7 @@ public class Batch extends Bean implements Serializable {
 	
 	
 	@JsonManagedReference
-	 @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	 @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Section> sections ;
 	
 	

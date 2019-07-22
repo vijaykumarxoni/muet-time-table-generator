@@ -225,7 +225,6 @@ $(document).ready(function() {
 					'code' : code,
 					'credit_hour' : credithour,
 					'semester.id' : semesterid,
-					'dept.id' : deptid,
 					'type':"Theory",
 				},
 				success : function(msg) {
@@ -245,7 +244,6 @@ $(document).ready(function() {
 					'code' : code,
 					'credit_hour' : 3,
 					'semester.id' : semesterid,
-					'dept.id' : deptid,
 					'type':"Practical",
 				},
 				success : function(msg) {
@@ -277,7 +275,6 @@ $(document).ready(function() {
 				'code' : code,
 				'credit_hour' : credithour,
 				'semester.id' : semesterid,
-				'dept.id' : deptid,
 				'type':type,
 			},
 			success : function(msg) {
@@ -544,21 +541,7 @@ $(document).ready(function() {
 				<div class="modal-body">
 
 						<div class="col-sm-12">
-						<div class="form-group">
-					   <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver"  
-                           url="jdbc:mysql://localhost/time_table"  
-    						 user="root"  password=""/>  
-						<sql:query dataSource="${db}" var="rs">  
-								SELECT * from department;  
-						</sql:query>  
-							<select class="form-control " id="selectdept">
-							<option value="-1">-- Select Department --</option>
-							<c:forEach var="table" items="${rs.rows}">  
-								<option value="${table.id}"><c:out value="${table.name}"/></option>   
-							</c:forEach> 
-							</select>
-						</div>
-					</div>
+						
 					
 					
 					<div class="col-sm-12">

@@ -28,6 +28,11 @@ public class User extends Bean  implements Serializable {
 	@JoinColumn(name = "dept_id",referencedColumnName="id")
 	private Department department;
 	
+    
+    @ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "teacher_id",referencedColumnName="id")
+	private Teacher teacher;
+	
 
     public Department getDepartment() {
 		return department;
@@ -97,6 +102,14 @@ public class User extends Bean  implements Serializable {
 
 	public void setAdminRole(String adminRole) {
 		this.adminRole = adminRole;
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
 	}
     
     

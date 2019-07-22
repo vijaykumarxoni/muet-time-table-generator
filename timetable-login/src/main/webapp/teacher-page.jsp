@@ -39,29 +39,7 @@
 <script type="text/javascript">
         var rowId = "";
 
-function getSelectOptions() {
 
-	$.ajax({
-
-		url : 'department/getList',
-		type : 'post',
-		async:'false',
-		success : function(msg) {
-			var options = "";
-			options += "<option value='-1'>-- Department --</option>";
-
-			for (x in msg) {
-				options += "<option value='"+msg[x].id+"'>" + msg[x].name
-						+ "</option>";
-
-			}
-
-			$("#selectdept").html(options);
-		}
-
-	});
-
-}
 
 
 function getRow(id) {
@@ -81,7 +59,7 @@ function getRow(id) {
 			$('#password').val(msg.password);
 			$('#designation').val(msg.designation);
 			$('#contact').val(msg.contact);
-			$("#selectdept").val(msg.dept.id).change();
+
 			$("#designationSelect").val(msg.designation).change();
 			$("#gender").val(msg.gender).change();
 
@@ -193,12 +171,10 @@ function show(page) {
 
 								
 $(document).ready(function() {
-	getSelectOptions();
 	show(0);
 	$('#updateteacherBtn').hide();
 	$('#addteacherBtn').click(function() {
 		var name = $('#name').val();
-		var deptid = $('#selectdept').val();
 		var password = $('#password').val();
 		var designation = $('#designationSelect').val();
 		var gender = $("#gender").val();
@@ -218,7 +194,6 @@ $(document).ready(function() {
 			'designation' : designation,
 			'gender' : gender,
 			'contact' : contact,
-			'dept.id' : deptid,
 			
 			},
 		success : function(msg) {
@@ -228,7 +203,6 @@ $(document).ready(function() {
 		$('#designation').val("");
 		$("#gender:checked").val("");
 		$('#contact').val("");
-		$('#selectdept').val('-1').change()	
 				$('#designationSelect').val('-1').change()	
 
 		show(0);
@@ -243,7 +217,6 @@ $(document).ready(function() {
 	$('#updateteacherBtn').click(function() {
 
 		var name = $('#name').val();
-		var deptid = $('#selectdept').val();
 		var password = $('#password').val();
 		var designation = $('#designationSelect').val();
 		var gender = $("#gender").val();
@@ -261,7 +234,6 @@ $(document).ready(function() {
 				'designation' : designation,
 				'gender' : gender,
 				'contact' : contact,
-				'dept.id' : deptid,
 
 			},
 			success : function(msg) {
@@ -288,7 +260,6 @@ $(document).ready(function() {
 		$('#designation').val("");
 		$("#gender:checked").val("");
 		$('#contact').val("");
-		$("#selectdept").val('-1').change();
 		$("#designationSelect").val('-1').change();
 		$("#gender").val('-1').change();
 
@@ -464,16 +435,6 @@ $(document).ready(function() {
 				</div>
 				<div class="modal-body">
 
-						<div class="col-sm-12">
-						<div class="form-group">
-					   
-							<select class="form-control " id="selectdept">
-							
-							</select>
-							
-						</div>
-					</div>
-					
 					
 					<div class="col-sm-12">
 						<div class="form-group">

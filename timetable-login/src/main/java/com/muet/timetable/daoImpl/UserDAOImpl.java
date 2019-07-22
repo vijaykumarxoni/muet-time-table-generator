@@ -25,7 +25,6 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<Role>(roleRepository.findAll()));
         userRepository.save(user);
     }
 

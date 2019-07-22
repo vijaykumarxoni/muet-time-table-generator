@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.Room;
 import com.muet.timetable.dao.RoomDAO;
 import com.muet.timetable.repository.RoomRepository;
@@ -22,8 +23,8 @@ public class RoomDAOImpl implements RoomDAO {
 	RoomRepository roomRepository;
 
 	
-	public Page<Room> getAllRecords(Pageable pageable) {
-		return roomRepository.findAll(pageable);
+	public Page<Room> getAllRecords(Department department,Pageable pageable) {
+		return roomRepository.getAllRecordsByDept(department, pageable);
 	}
 
 	public Room getRecordById(Long id) {
@@ -57,6 +58,12 @@ public class RoomDAOImpl implements RoomDAO {
 	public List<Room> getAllRecords() {
 		// TODO Auto-generated method stub
 		return (List<Room>) roomRepository.findAll();
+	}
+
+	@Override
+	public List<Room> getAllRecordsByDept(Department department) {
+		// TODO Auto-generated method stub
+        return roomRepository.getAllRecordsByDept(department);
 	}
 	
 	
