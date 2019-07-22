@@ -110,6 +110,9 @@ function show(page) {
 				data : 'page=' + page,
 
 				success : function(msg) {
+					
+					
+					
 					var rows = "";
 					var pages = "";
 					var data = msg.content;
@@ -117,6 +120,8 @@ function show(page) {
 					var totalPages = parseInt(msg.totalPages);
 
 					for (x in data) {
+						
+						alert(data[x]);
 						rows += "<tr>";
 						rows += "<td>" + data[x].id + "</td>";
 						rows += "<td>" + data[x].batch.name + "</td>";

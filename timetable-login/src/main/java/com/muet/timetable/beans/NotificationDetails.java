@@ -19,7 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Where(clause = "active =1")
 @Entity
-@Table(name = "notificationdetails")
+@Table(name = "notification")
 @EntityListeners(AuditingEntityListener.class)
 
 public class NotificationDetails extends Bean implements Serializable{
@@ -36,16 +36,33 @@ public class NotificationDetails extends Bean implements Serializable{
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "user_id",referencedColumnName="id")
-	private User user_sender;
+	private User sender;
 
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "reciever_id",referencedColumnName="id")
-	private Teacher teacher;
+	private User reciver;
 	
 	@NotNull
 	@Column(name = "description")
 	private String description;
+	
+	
+	@NotNull
+	@Column(name = "datetime")
+	private String datetime;
+	
+
+
+
+
+	public String getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(String datetime) {
+		this.datetime = datetime;
+	}
 
 	public Long getId() {
 		return id;
@@ -63,21 +80,22 @@ public class NotificationDetails extends Bean implements Serializable{
 		this.assignsubject = assignsubject;
 	}
 
-	public User getUser_sender() {
-		return user_sender;
-	}
-
-	public void setUser_sender(User user_sender) {
-		this.user_sender = user_sender;
-	}
-
 	
-	public Teacher getTeacher() {
-		return teacher;
+
+	public User getSender() {
+		return sender;
 	}
 
-	public void setTeacher(Teacher teacher) {
-		this.teacher = teacher;
+	public void setSender(User sender) {
+		this.sender = sender;
+	}
+
+	public User getReciver() {
+		return reciver;
+	}
+
+	public void setReciver(User reciver) {
+		this.reciver = reciver;
 	}
 
 	public String getDescription() {

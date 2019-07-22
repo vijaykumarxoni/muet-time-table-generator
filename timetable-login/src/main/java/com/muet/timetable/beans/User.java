@@ -2,6 +2,8 @@ package com.muet.timetable.beans;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -19,6 +21,12 @@ public class User extends Bean  implements Serializable {
 
 
     private String email;
+    
+    @JsonBackReference
+     @OneToOne(cascade = CascadeType.ALL)
+	 @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+	 private Teacher teacher;
+    
     
     @Column(name="admin_role")
     private String adminRole;
@@ -98,6 +106,15 @@ public class User extends Bean  implements Serializable {
 	public void setAdminRole(String adminRole) {
 		this.adminRole = adminRole;
 	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
     
+	
     
 }

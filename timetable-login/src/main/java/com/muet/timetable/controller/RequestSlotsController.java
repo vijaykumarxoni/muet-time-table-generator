@@ -2,6 +2,8 @@ package com.muet.timetable.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,24 +27,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.muet.timetable.beans.AssignSubject;
 import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.NotificationDetails;
+import com.muet.timetable.beans.RequestSlots;
 import com.muet.timetable.beans.Section;
 import com.muet.timetable.beans.Semester;
 import com.muet.timetable.beans.Subject;
 import com.muet.timetable.beans.Teacher;
 import com.muet.timetable.beans.TimeSlotDaily;
+import com.muet.timetable.dao.RequestSlotsDAO;
 import com.muet.timetable.daoImpl.AssignSubjectDAOImpl;
 import com.muet.timetable.daoImpl.NotificationDetailsDAOImpl;
+import com.muet.timetable.daoImpl.RequestSlotsDAOImpl;
 import com.muet.timetable.daoImpl.SubjectDAOImpl;
 import com.muet.timetable.daoImpl.TimeSlotDailyDAOImpl;
 import com.muet.timetable.daoImpl.UserDAOImpl;
 
 @Controller
-@RequestMapping("/notificationdetails")
-public class NotificationDetailsController {
+@RequestMapping("/requestslots")
+public class RequestSlotsController {
 
 	
 	@Autowired
-	NotificationDetailsDAOImpl notificationdaoimpl;
+	RequestSlotsDAOImpl requestSlotsDAOImpl;
 	
 	@Autowired
 	UserDAOImpl userdaoimpl;
@@ -52,10 +57,10 @@ public class NotificationDetailsController {
 	
 	@RequestMapping("")
 	public String DayPage(Model modele) {
-		List <NotificationDetails> list =notificationdaoimpl.getAllRecords();
+		List <RequestSlots> list =requestSlotsDAOImpl.getAllRecords();
 		modele.addAttribute("notification", list);
 	   
-		return "notificationdetails";
+		return "requestslots-page";
 	}
 	
 	
@@ -65,46 +70,33 @@ public class NotificationDetailsController {
 	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
 		Pageable pageable = new PageRequest(page, 4, Direction.ASC, "id");
 		
-		return ResponseEntity.ok(notificationdaoimpl.getAllRecords(pageable));
+		return ResponseEntity.ok(requestSlotsDAOImpl.getAllRecords(pageable));
 
 	}
 	
 	@PostMapping("/getList")
 	public ResponseEntity<?> getList() {
-		return ResponseEntity.ok(notificationdaoimpl.getAllRecords());
+		return ResponseEntity.ok(requestSlotsDAOImpl.getAllRecords());
 
 	}
 
 	@PostMapping("/get")
 	public ResponseEntity<?> getOne(@ModelAttribute NotificationDetails notificationdetails, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
-		return ResponseEntity.ok(notificationdaoimpl.getRecordById(notificationdetails.getId()));
+		return ResponseEntity.ok(requestSlotsDAOImpl.getRecordById(notificationdetails.getId()));
 
 	}
 
 	@PostMapping("/save")
-	public ResponseEntity<?> save(@ModelAttribute NotificationDetails notificationdetails, BindingResult bindingResult,
+	public ResponseEntity<?> save(@ModelAttribute RequestSlots requestSlots, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
-		Date date3 = Calendar.getInstance().getTime();
-	    SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
+	
 
-	    java.sql.Date date = null;
-
-	    try {
-	        date =new java.sql.Date(df.parse(df.format(date3)).getTime());
-	        System.out.println(date);
-	    } catch (ParseException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    }
 		
-	    notificationdetails.setCreatedAt(date);
-	    notificationdetails.setUpdatedAt(date);
-	    notificationdetails.setCreatedBy(0);
-	    notificationdetails.setUpdatedBy(0);
-	    notificationdetails.setActive(1);
-	    notificationdaoimpl.addRecord(notificationdetails);
-		return ResponseEntity.ok("OK");
+	
+		requestSlots.setActive(1);
+	    requestSlotsDAOImpl.addRecord(requestSlots);
+		return ResponseEntity.ok("OKz");
 
 	}
 
@@ -128,10 +120,10 @@ public class NotificationDetailsController {
 //	}
 
 	@PostMapping("/delete")
-	public ResponseEntity<?> delete(@ModelAttribute NotificationDetails notificationdetails, BindingResult bindingResult,
+	public ResponseEntity<?> delete(@ModelAttribute RequestSlots requestSlots, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
-		NotificationDetails deletednotificationdetails = notificationdaoimpl.getRecordById(notificationdetails.getId());
-		notificationdaoimpl.deleteRecord(deletednotificationdetails);
+		RequestSlots deletednotificationdetails = requestSlotsDAOImpl.getRecordById(requestSlots.getId());
+		requestSlotsDAOImpl.deleteRecord(deletednotificationdetails);
 		return ResponseEntity.ok("OK");
 
 	}

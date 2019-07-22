@@ -22,6 +22,8 @@
 <!-- Custom Css -->
 <link rel="stylesheet" href="assets/css/main.css">
 <link rel="stylesheet" href="assets/css/color_skins.css">
+      <script src="/assets/js/jquery.min.js"></script>
+
 </head>
 
 <body class="theme-blush menu_img">
@@ -69,9 +71,9 @@
                                     <img class="media-object" src="assets/images/xs/avatar6.jpg" alt="">
                                     <div class="media-body">
                                      
-                                        <span class="name"><c:out value="${notification.user_sender.username}" /><span class="time">1hr ago</span>
-                                        <span class="message"><c:out value="dept of username" /></span><br>
-                                        <span class="message"><c:out value="${notification.description}" /></span>   
+                                        <span class="name"><c:out value="${notification.sender.username}" /><span class="time">${notification.createdAt}</span>
+                                        <span class="message"><c:out value="From " />${notification.sender.department.name}</span><br>
+                                        <span class="message"><c:out value="${notification.assignSubject.subject.name}" /></span>   
                                          
                                                                              
                                     </div>
@@ -192,58 +194,58 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="Professors">
                                 <div class="table-responsive">
-                                    <table class="table table-hover m-b-0 c_list">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Name</th>                                    
-                                                <th data-breakpoints="xs">Department</th>   
-                                                 <th data-breakpoints="xs">Batch</th>   
-                                                  <th data-breakpoints="xs">Section</th>                                    
-                                                <th data-breakpoints="xs">View Details</th>
-                                            </tr>
-                                        </thead>
-                                            <tbody>
-                                                 <c:forEach var="notification" items="${notification}">  
-                                            <tr>
-                                                <td>
-                                                    <div class="checkbox">
-                                                         <p class="notificationid"><c:out value="${notification.id}" /></p>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <img src="assets/images/xs/avatar10.jpg" class="rounded-circle avatar" alt="">
-                                                    <p class="c_name"><c:out value="${notification.user_sender.username}" /></p>
-                                                </td>
-                                                <td>
-                                                    <p><i class="zmdi zmdi-pin"><c:out value="dept name of user" /></i></p>
-                                                </td>
-                                                <td>
-                                                    <p class="c_name"><c:out value="${notification.assignsubject.batch.name}" /></p>
-                                                </td>
-                                                <td>
-                                                     <p class="c_name"><c:out value="${notification.assignsubject.section.name}" /></p>
-                                                </td>
-                                                <td>
-                                                  <div class="col-lg-4 col-md-6 col-sm-12">
-                                                        <a href="slots?user_id=${notification.id}"> 
-                                                           <div class="demo-google-material-icon"> 
-                                                              <i class="material-icons">visibility</i>
-                                                                <span class="icon-name"></span> 
-                                                            </div>
-                                                        </a>
-                                                   </div>
-                                                </td>
-                                            </tr>
-                                    </c:forEach>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>                     
                         </div>
                     </div>
-                </div>                
+                </div>
+                
+                <div class="card">
+						<div class="body">
+							<div class="tab-content">
+								<div class="tab-pane active" id="showTab">
+									<div class="table-responsive">
+										<table class="table table-hover m-b-0 c_list">
+											<thead>
+												<tr>
+													<th>Department</th>
+													<th>Batch</th>
+													<th>Section</th>
+													<th>Subject</th>
+													<th>Time</th>
+													<th>Pick Slots</th>
+												</tr>
+											</thead>
+											<tbody id="dayTblBody">
+											
+											<c:forEach var="noti" items="${notification}">
+<tr>
+<td>${noti.sender.department.name}</td>
+<td>${noti.assignSubject.batch.name}</td>
+
+<td>${noti.assignSubject.section.name}</td>
+
+<td>${noti.assignSubject.subject.name}</td>
+<td>${noti.createdAt}</td>
+<td><a href="slots">Slots</a></td>
+
+
+</tr>
+</c:forEach>
+
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>                
             </div>
+            
+    
+       
             <div class="col-lg-12">
                 <div class="card">
                     <div class="body">                            
@@ -268,5 +270,4 @@
 <script src="assets/bundles/mainscripts.bundle.js"></script>
 </body>
 
-<!-- Mirrored from thememakker.com/templates/oreo/university/html/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 04 May 2019 10:02:35 GMT -->
 </html>

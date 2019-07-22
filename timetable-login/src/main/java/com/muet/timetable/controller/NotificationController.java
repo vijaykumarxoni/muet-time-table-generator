@@ -2,6 +2,8 @@ package com.muet.timetable.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -122,6 +124,18 @@ public class NotificationController {
 		return ResponseEntity.ok(notificationdaoimpl.getRecordById(notificationdetails.getId()));
 
 	}
+	
+	
+	@PostMapping("/getConversation")
+	public ResponseEntity<?> getConversation(@ModelAttribute NotificationDetails notificationdetails, BindingResult bindingResult,
+			HttpServletRequest httpServletRequest) {
+		return ResponseEntity.ok(notificationdaoimpl.getNotificationByAssignSubject(notificationdetails.getAssignsubject()));
+
+	}
+
+	
+	
+	
 
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@ModelAttribute NotificationDetails notificationdetails, BindingResult bindingResult,
@@ -137,26 +151,19 @@ public class NotificationController {
 		
 		
 		User user=userRepository.findByUsername(httpServletRequest.getUserPrincipal().getName());
-		//System.out.println("user id"+user.getId());
 		
-		Date date3 = Calendar.getInstance().getTime();
-	    SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
-
-	    java.sql.Date date = null;
-
-	    try {
-	        date =new java.sql.Date(df.parse(df.format(date3)).getTime());
-	        System.out.println(date);
-	    } catch (ParseException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    }
+		notificationdetails.setSender(user);
 		
-	    notificationdetails.setUser_sender(user);
-	    notificationdetails.setCreatedAt(date);
-	    notificationdetails.setUpdatedAt(date);
-	    notificationdetails.setCreatedBy(0);
-	    notificationdetails.setUpdatedBy(0);
+		
+		LocalDateTime myDateObj = LocalDateTime.now(); 
+		 
+	    DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
+
+	    String datetime = myDateObj.format(myFormatObj); 
+	    
+	  notificationdetails.setDatetime(datetime);  
+	
+	  
 	    notificationdetails.setActive(1);
 	    notificationdaoimpl.addRecord(notificationdetails);
 	    

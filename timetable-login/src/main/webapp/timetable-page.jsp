@@ -73,33 +73,87 @@
          								
          $(document).ready(function() {
          
-		
-         		
-         
-
-         	
+        	 var reciver_id=0;
+        	 var  teacher_id=0;
+        	 var  assign_subject_id=0;
+        	 
          	
         	  	$('.send-msg').click(function(event){
         	    	//	$('#chat-btn').toggleClass("chat-launcher active");
         	    		//$('#chat').addClass("is-open pullUp");
         	    	  
-				       // alert(event.target.id);
+				        //alert(event.target.id);
 				        
-				        
-				      var  teacher_id=event.target.id;
+				         reciver_id=event.target.id;
+				       teacher_id=this.getAttribute("data-teacher");
+				        assign_subject_id=this.getAttribute("data-assign-subject");
+				      //alert(teacher_id);
 
         	    		//addClass
-        	    		
+        	    		var all_msgs="";
+        	    		var teacher_name="";
         	    		$.ajax({
         	    				
         	    				url:'teacher/get',
         	    				type:'post',
         	    				data:'id='+teacher_id,
         	    				success:function(msg){
+        	    					teacher_name=msg.name;
+        	    					$('#teacher-name').text(teacher_name);
+        	    					//alert(assign_subject_id);
+        	    					$.ajax({
+                	    				
+                	    				url:'notification/getConversation',
+                	    				type:'post',
+                	    				data:'assignsubject='+assign_subject_id,
+                	    				success:function(msg){
+											
+											
+											for (obj in msg){
+												//
+												if (msg[obj].sender.id==3){
+													
+											all_msgs+="<li class='right'  id='sender' >"+
+		        	    							"<div class='chat-info'>"+
+		        	    								"<span class='datetime'>"+msg[obj].datetime+"</span> <span class='message'>"+
+		        	    								msg[obj].description+
+		        	    								"</span>"+
+		        	    							"</div>"+
+		        	    						"</li>";
+													
+													
+												}
+												else{
+													//recive msgs
+												all_msgs+="<li class='left float-left'  id='reciver' ><img "+
+		        	    							"src='assets/images/xs/avatar3.jpg' class='rounded-circle' alt=''> "+
+		        	    							"<div class='chat-info'>" +
+		        	    								"<a class='name' href='javascript:void(0);'>"+teacher_name+"</a> <span"+
+		        	    									" class='datetime'>"+msg[obj].datetime+"</span> <span class='message'>"+msg[obj].description+" </span> "+
+		        	    							"</div>" +
+		        	    						"</li>"; 
+													
+												}
+											}
+										//	alert(all_msgs);
+											$('#all-msgs').html(all_msgs);
+											
+                	    				}
+        	    					});
         	    					
-        	    					$('#teacher-name').text(msg.name);
+        	    					
+        	    					
+        	    					
         	    					
         	    					$('#chating-area').toggleClass(" is-open pullUp");
+        	    					
+        	    					$('#chk').toggleClass("btn-success");
+        	    					$('#chk').text("working");
+        	    					
+        	    					
+        	    					
+        	    					
+        	    					
         	    					
         	    					
 
@@ -110,36 +164,66 @@
         	    				}
         	    				
         	    				
-        	    			});
+        	    			}); //ajax closed
+        	    			
+
+        	        
+        	    		});
+        	  	
+        	  	var description="";
+        	  	 $('#send').click(function(event){
+	           		 
+ 	           		//assign_subject_id;
+ 	           		
+ 	           		
+ 	           		var receiver=reciver_id;
+ 	           		description=$('#msg').val();
+ 	           		
+ 	           		if ($("#requestforslots").prop("checked")==true){
+	           			
+	           			description+=" <br> <a href='slots?id=' >Request For Slots</a>";
+	           			
+	           			
+	           			$.ajax({
+	 	           			url:'requestslots/save',
+	 	           			type:'post',
+	 	           			data:'assignSubject='+assign_subject_id+'&user='+receiver+'&sender=3',
+	 	           			
+	 	           			success:function(msg){
+	 	           				alert("added");
+	 	           				
+	 	           			}
+	           			
+	           			});
+		
+	           			
+	           			
+	           		}
+ 	           		
+ 	           		$.ajax({
+ 	           			url:'notification/save',
+ 	           			type:'post',
+ 	           			data:'assignsubject='+assign_subject_id+'&reciver='+receiver+'&description='+description,
+ 	           			
+ 	           			success:function(msg){
+ 	           				//alert(msg);
+ 	           				var text="<li class='right'  id='sender' >"+
+		        	    							"<div class='chat-info'>"+
+		        	    								"<span class='datetime'>Just Now</span> <span class='message'>"+
+		        	    								description+
+		        	    								"</span>"+
+		        	    							"</div>"+
+		        	    						"</li>";
+ 	           				$('#all-msgs').append(text);
+ 	           				
+ 	           				
+ 	           			}
+ 	           			
+ 	           		});
+ 	           		 
+ 	           	 });
         	    		
-        	    		/*
-        	    		   var chatingClass = $('#chating-area').attr("class");
-        	    		if (chatingClass  == "chat-wrapper is-open pullUp"){
-        	    			
-        	    			
-        	    			
-        	    			
-        	    				
-        	    			
-        	    			
-        	    			
-        	    			
-        	    			
-        	    			
-        	    		}
-        	    		else if (chatingClass  == "chat-wrapper"){
-        	    			
-        	    			
-        	    			
-        	    			
-        	    			
-        	    			
-        	    			
-        	    			
-        	    			
-        	    		}
-        	    		
-        	    		*/
+        	    	
         	    		
         	    		
         	    		
@@ -153,7 +237,7 @@
          	
          	
          		
-         }); // ready end
+        // }); // ready end
          
       </script>
    </head>
@@ -168,6 +252,7 @@
             <p>Please wait...</p>
          </div>
       </div>
+      
       <!-- Overlay For Sidebars -->
       <div class="overlay"></div>
       <!-- Top Bar -->
@@ -181,7 +266,6 @@
 
 	
 	<!-- Chat-launcher -->
-	<div class="chat-launcher" id="chat-btn" ></div>
 	<div class="chat-wrapper" id="chating-area" >
 		<div class='card'>
 			<div class='header'>
@@ -191,56 +275,18 @@
 				</ul>
 			</div>
 			<div class='body'>
-				<div class='chat-widget'>
-					<ul class='chat-scroll-list clearfix'>
-						<li class='left float-left'><img
-							src='assets/images/xs/avatar3.jpg' class='rounded-circle' alt=''>
-							<div class='chat-info'>
-								<a class='name' href='javascript:void(0);'>Alexanderdddds</a> <span
-									class='datetime'>6:12</span> <span class='message'>Hello,
-									John </span>
-							</div></li>
-						<li class='right'>
-							<div class='chat-info'>
-								<span class='datetime'>6:15</span> <span class='message'>Hi,
-									Alexander<br> How are you!
-								</span>
-							</div>
-						</li>
-						<li class='right'>
-							<div class='chat-info'>
-								<span class='datetime'>6:16</span> <span class='message'>There
-									are many variations of passages of Lorem Ipsum available</span>
-							</div>
-						</li>
-						<li class='left float-left'><img
-							src='assets/images/xs/avatar2.jpg' class='rounded-circle' alt=''>
-							<div class='chat-info'>
-								<a class='name' href='javascript:void(0);'>Elizabeth</a> <span
-									class='datetime'>6:25</span> <span class='message'>Hi,
-									Alexander,<br> John <br> What are you doing?
-								</span>
-							</div></li>
-						<li class='left float-left'><img
-							src='assets/images/xs/avatar1.jpg' class='rounded-circle' alt=''>
-							<div class='chat-info'>
-								<a class='name' href='javascript:void(0);'>Michael</a> <span
-									class='datetime'>6:28</span> <span class='message'>I
-									would love to join the team.</span>
-							</div></li>
-						<li class='right'>
-							<div class='chat-info'>
-								<span class='datetime'>7:02</span> <span class='message'>Hello,
-									<br>Michael
-								</span>
-							</div>
-						</li>
+				<div class='chat-widget' style=" width: auto; height: 300px;display: flex; flex-direction: column-reverse;overflow: auto;">
+					<ul class='chat-scroll-list clearfix' id="all-msgs">
+					
+						
+						
+					
 					</ul>
 				</div>
 				<div class='input-group p-t-10' >
 				<b>Request for slots</b>
 					<input type="checkbox" class="form-control " value="Request for slots"
-						  id="" >
+						  id="requestforslots" >
 						  <hr>
 						  </div>
 				<div class='input-group p-t-15'>
@@ -271,7 +317,7 @@
             <div class="row">
                <div class="col-lg-7 col-md-6 col-sm-12">
                   <h2>
-                     Time Table <small>Welcome to MUET Time Table</small>
+                     Time Table <small>Welcome to MUET Time Table </small>
                   </h2>
                </div>
                <div class="col-lg-5 col-md-6 col-sm-12">
@@ -337,7 +383,8 @@
                                           <small class='text-muted'><b>${listofteachers.subject.type}</b>
                                           </small> 
                                           <hr>
-                                           <input type="button" class="btn btn-success send-msg" value="Send Message" id="${listofteachers.teacher.id}"  />
+													                                          
+                                           <input type="button" class="btn btn-success send-msg" value="Send Message" id="${listofteachers.teacher.user.id}"    data-teacher="${listofteachers.teacher.id}"  data-assign-subject="${listofteachers.id}"   />
                                        </div>
                                     </c:when>
                                  </c:choose>
@@ -353,7 +400,7 @@
                                           <small class='text-muted'><b>${listofteachers.subject.type}</b>
                                           </small> 
                                           <hr>
-                                         <input type="button" class="btn btn-success send-msg" value="Send Message" id="${listofteachers.teacher.id}"  />
+                                         <input type="button" class="btn btn-success send-msg" value="Send Message" id="${listofteachers.teacher.id}"    />
                                        </div>
                                     </c:when>
                                  </c:choose>

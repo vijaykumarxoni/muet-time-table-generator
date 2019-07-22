@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.muet.timetable.beans.AssignSubject;
 import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.NotificationDetails;
+import com.muet.timetable.beans.RequestSlots;
 import com.muet.timetable.beans.Section;
 import com.muet.timetable.beans.Semester;
 import com.muet.timetable.beans.Subject;
@@ -38,6 +39,7 @@ import com.muet.timetable.daoImpl.AssignSubjectDAOImpl;
 import com.muet.timetable.daoImpl.BatchDAOImpl;
 import com.muet.timetable.daoImpl.DayDAOImpl;
 import com.muet.timetable.daoImpl.NotificationDetailsDAOImpl;
+import com.muet.timetable.daoImpl.RequestSlotsDAOImpl;
 import com.muet.timetable.daoImpl.SectionDAOImpl;
 import com.muet.timetable.daoImpl.SemesterDAOImpl;
 import com.muet.timetable.daoImpl.SubjectDAOImpl;
@@ -55,7 +57,7 @@ public class TimeTableWithoutRoomController {
 	AssignSubjectDAOImpl assignsubjectDAOImpl;
 	
 	@Autowired
-	NotificationDetailsDAOImpl notificationdetailsdaoimpl;
+	RequestSlotsDAOImpl requestSlotsDAOImpl;
 	
 	@Autowired
 	DayDAOImpl dayDAOImpl;
@@ -71,11 +73,12 @@ public class TimeTableWithoutRoomController {
 	
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
-	public String DayPage(Model modele,@RequestParam("user_id") String user_id) {
+	public String DayPage(Model modele,@RequestParam("requestslots_id") String requestslots_id) {
 		
-		Long id = Long.parseLong(user_id);
-		NotificationDetails object = notificationdetailsdaoimpl.getRecordById(id);
-		modele.addAttribute("Notificationobject", object);
+		Long id = Long.parseLong(requestslots_id);
+		RequestSlots requestSlots = requestSlotsDAOImpl.getRecordById(id);
+		System.out.println(requestSlots.getAssignSubject().getSubject().getName());
+		modele.addAttribute("requestslots", requestSlots);
 		List<TimeSlotDaily> timeslotdailylist = timeslotdailydaoimpl.getAllRecords();
 		 modele.addAttribute("TimeslotDaily", timeslotdailylist);
 		return "slots-page";
@@ -132,24 +135,7 @@ public class TimeTableWithoutRoomController {
 
 	}
 
-//	@PostMapping("/update")
-//	public ResponseEntity<?> update(@ModelAttribute AssignSubject assignsubject, BindingResult bindingResult,
-//			HttpServletRequest httpServletRequest) {
-//		AssignSubject updatedassignsubject = assignsubjectDAOImpl.getRecordById(assignsubject.getId());
-//		Subject subject =subjectDAOImpl.getRecordById(assignsubject.getSubject().getId());
-//		Teacher teacher =teacherDAOImpl.getRecordById(assignsubject.getTeacher().getId());
-//		Batch batch =batchDAOImpl.getRecordById(assignsubject.getBatch().getId());
-//		Semester semester =semesterDAOImpl.getRecordById(assignsubject.getSemester().getId());
-//		Section section=sectionDAOImpl.getRecordById(assignsubject.getSection().getId());
-//		updatedassignsubject.setSubject(subject);
-//		updatedassignsubject.setTeacher(teacher);
-//		updatedassignsubject.setBatch(batch);
-//		updatedassignsubject.setSemester(semester);
-//		updatedassignsubject.setSection(section);
-//        assignsubjectDAOImpl.updateRecord(updatedassignsubject);
-//		return ResponseEntity.ok("OK");
-//
-//	}
+
 
 	@PostMapping("/delete")
 	public ResponseEntity<?> delete(@ModelAttribute TimeTableWithoutRoom timetablewithoutroom, BindingResult bindingResult,

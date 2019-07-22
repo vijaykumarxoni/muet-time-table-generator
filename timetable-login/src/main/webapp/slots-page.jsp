@@ -73,12 +73,12 @@
                     <div class="header">
                         <h2>
                         
-                             <strong>From :- <c:out value="Department Of Software Engineerring" /></strong>
-                             <input type="hidden" name="totalCreditHours" id="totalCreditHours" value="${Notificationobject.assignsubject.subject.credit_hour}">
-                             <input type="hidden" name="assignsubjectid" id="assignsubjectid" value="${Notificationobject.assignsubject.id}">
-                             <input type="hidden" name="teacherid" id="teacherid" value="${Notificationobject.teacher.id}">
-                             <input type="hidden" name="userid" id="userid" value="${Notificationobject.user_sender.id}">
-                             <small style="color:black;"> Details :- <c:out value="${Notificationobject.description}" />for the subject <c:out value="${Notificationobject.assignsubject.subject.name}" /></small> 
+                             <strong>From :- <c:out value="Department Of ${requestslots.sender.department.name}" /></strong>
+                             <input type="hidden" name="totalCreditHours" id="totalCreditHours" value="${requestslots.assignSubject.subject.credit_hour}">
+                             <input type="hidden" name="assignsubjectid" id="assignsubjectid" value="${requestslots.assignSubject.id}">
+                             <input type="hidden" name="teacherid" id="teacherid" value="${requestslots.user.id}">
+                             <input type="hidden" name="userid" id="userid" value="${requestslots.sender.id}">
+                             <small style="color:black;"> <c:out value="${requestslots.assignSubject.subject.name}" /></small> 
                           </h2>
                     </div>
                    

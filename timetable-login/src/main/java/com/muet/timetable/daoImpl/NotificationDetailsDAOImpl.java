@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.muet.timetable.beans.AssignSubject;
 import com.muet.timetable.beans.NotificationDetails;
 import com.muet.timetable.dao.NotificationDetailsDAO;
 import com.muet.timetable.repository.AssignSubjectRepository;
@@ -55,6 +56,12 @@ public class NotificationDetailsDAOImpl implements NotificationDetailsDAO {
 		// TODO Auto-generated method stub
 		System.out.println("The function is called");
 		return (List<NotificationDetails>) notificationdetailsrepository.findAll();
+	}
+
+	@Override
+	public List<NotificationDetails> getNotificationByAssignSubject(AssignSubject assignSubject) {
+		// TODO Auto-generated method stub
+		return (List<NotificationDetails>) notificationdetailsrepository.getNotificationByAssignSubject(assignSubject);
 	}
 
 }
