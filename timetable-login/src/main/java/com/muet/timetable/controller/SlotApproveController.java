@@ -23,7 +23,7 @@ public class SlotApproveController {
 		
 		
 		
-		System.out.println(assign_subject);
+		
 		return "slotapprove-page";
 	}
 

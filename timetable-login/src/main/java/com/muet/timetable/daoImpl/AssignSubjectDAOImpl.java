@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.muet.timetable.beans.AssignSubject;
 import com.muet.timetable.beans.Batch;
+import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.Section;
+import com.muet.timetable.beans.Semester;
 import com.muet.timetable.beans.Teacher;
 import com.muet.timetable.dao.AssignSubjectDAO;
 import com.muet.timetable.repository.AssignSubjectRepository;
@@ -61,9 +63,9 @@ public class AssignSubjectDAOImpl implements AssignSubjectDAO{
 	}
 
 	@Override
-	public List<AssignSubject> getAllRecordsByBatchAndSection(Batch batch, Section section) {
+	public List<AssignSubject> getAllRecordsByBatchAndSectionAndSemester(Batch batch, Section section,Semester semester) {
 		// TODO Auto-generated method stub
-		return  assignsubjectrepository.getAllRecordsByBatchAndSection(batch, section);
+		return  assignsubjectrepository.getAllRecordsByBatchAndSectionAndSemester(batch, section,semester);
 	}
 
 	@Override
@@ -72,6 +74,24 @@ public class AssignSubjectDAOImpl implements AssignSubjectDAO{
 		
 		return  assignsubjectrepository.getAllRecordsByTeacher(teacher);
 		
+	}
+
+	@Override
+	public List<AssignSubject> getAllRecordsByBatch(Batch batch) {
+		// TODO Auto-generated method stub
+		return assignsubjectrepository.getAllRecordsByBatch(batch);
+	}
+	
+	@Override
+	public List<AssignSubject> getAllRecordsByDepartment(Department department) {
+		// TODO Auto-generated method stub
+		return assignsubjectrepository.getAllRecordsByDept(department);
+	}
+
+	@Override
+	public List<AssignSubject> getAllRecordsByBatchAndSemester(Batch batch, Semester semester) {
+		// TODO Auto-generated method stub
+		return assignsubjectrepository.getAllRecordsByBatchAndSemester(batch, semester);
 	}
 
 }

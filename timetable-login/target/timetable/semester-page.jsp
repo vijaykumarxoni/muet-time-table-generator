@@ -311,6 +311,7 @@ $(document).ready(function() {
 											<thead>
 												<tr>
 													<th>#</th>
+										
 													<th>Name</th>
 													<th data-breakpoints="xs">Action</th>
 												</tr>

@@ -1,3 +1,6 @@
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!doctype html>
@@ -12,7 +15,7 @@
 <meta name="description"
 	content="Responsive Bootstrap 4 and web Application ui kit.">
 
-<title>:: MUET University Admin ::</title>
+<title>Class Rooms :: MUET Timetable</title>
 <!-- Favicon-->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet"
@@ -31,35 +34,13 @@
 <script type="text/javascript">
 	var rowId = "";
 
-	function getSelectOptions() {
-
-		$.ajax({
-
-			url : 'department/getList',
-			type : 'post',
-			success : function(msg) {
-				var options = "";
-				options += "<option value='-1'>-- Department --</option>";
-
-				for (x in msg) {
-					options += "<option value='"+msg[x].id+"'>" + msg[x].name
-							+ "</option>";
-
-				}
-
-				$("#deptSelect").html(options);
-			}
-
-		});
-
-	}
-
 	function getRow(id) {
 		$('#updateRoomBtn').show();
 		$('#addRoomBtn').hide();
 		rowId = id;
 		$.ajax({
 
+			
 			url : '/classroom/get',
 			type : 'post',
 			data : 'id=' + id,
@@ -67,8 +48,8 @@
 
 				$('#name').val(msg.name);
 				$("#roomtype").val(msg.type).change();
-				$("#deptSelect").val(msg.department.id).change();
 
+				
 			}
 
 		});
@@ -160,14 +141,12 @@
 	}
 
 	$(document).ready(function() {
-		getSelectOptions();
 		show(0);
 		$('#updateRoomBtn').hide();
 
 		$('#addRoomBtn').click(function() {
 			var name = $('#name').val();
 			var roomtype = $("#roomtype").val();
-			var dept = $("#deptSelect").val();
 
 			$.ajax({
 
@@ -177,13 +156,11 @@
 				data : {
 					'name' : name,
 					'type' : roomtype,
-					"department.id" : dept,
 
 				},
 				success : function(msg) {
 					$('#name').val("");
 					$('#roomtype').val(-1);
-					$('#deptSelect').val(-1);
 
 					show(0);
 
@@ -197,7 +174,6 @@
 		$('#updateRoomBtn').click(function() {
 
 			var name = $('#name').val();
-			var dept = $("#deptSelect").val();
 			var roomtype = $("#roomtype").val();
 			$.ajax({
 
@@ -207,14 +183,12 @@
 					'id' : rowId,
 					'name' : name,
 					'type' : roomtype,
-					"department.id" : dept,
 
 				},
 				success : function(msg) {
 
 					$('#name').val("");
 					$('#roomtype').val(-1);
-					$('#deptSelect').val(-1);
 
 					$('#updateRoomBtn').hide();
 					$('#addRoomBtn').show();
@@ -229,13 +203,11 @@
 		});
 
 		$('#showAddModel').click(function() {
-			getSelectOptions();
 			$('#updateRoomBtn').hide();
 			$('#addRoomBtn').show();
 			$('#name').val("");
 			$('#roomtype').val(-1).change();
 			;
-			$('#deptSelect').val(-1).change();
 			;
 
 		});
@@ -257,18 +229,21 @@
 	<!-- Overlay For Sidebars -->
 	<div class="overlay"></div>
 	<!-- Top Bar -->
-	<jsp:include page="common/header.jsp"></jsp:include>
+	
+<c:choose>
+  <c:when test="${request =='SuperAdmin'}">
+	  <jsp:include page="super_common/header.jsp"></jsp:include>
+	  <jsp:include page="super_common/left-bar.jsp"></jsp:include>
+	  <jsp:include page="super_common/right-bar.jsp"></jsp:include>
 
-
-
-
+  </c:when>
+  <c:otherwise>
+  	<jsp:include page="common/header.jsp"></jsp:include>
 	<jsp:include page="common/left-bar.jsp"></jsp:include>
-
-	<!-- Right Sidebar -->
-
 	<jsp:include page="common/right-bar.jsp"></jsp:include>
-	<jsp:include page="common/chat-box.jsp"></jsp:include>
-
+  </c:otherwise>
+</c:choose>
+	
 
 
 	<!-- Main Content -->
@@ -278,17 +253,10 @@
 			<div class="row">
 				<div class="col-lg-7 col-md-6 col-sm-12">
 					<h2>
-						Class Rooms <small>Welcome to MUET Time Table</small>
+						ClASS ROOMS 
 					</h2>
 				</div>
-				<div class="col-lg-5 col-md-6 col-sm-12">
-					<ul class="breadcrumb float-md-right">
-						<li class="breadcrumb-item"><a href="index.html"><i
-								class="zmdi zmdi-home"></i> MUET</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0);">App</a></li>
-						<li class="breadcrumb-item active">Class Room</li>
-					</ul>
-				</div>
+				
 			</div>
 		</div>
 		<div class="container-fluid">
@@ -298,12 +266,7 @@
 					<div class="card action_bar">
 						<div class="body">
 							<div class="row clearfix">
-								<div class="col-lg-1 col-md-2 col-3">
-									<div class="checkbox inlineblock delete_all">
-										<input id="deleteall" type="checkbox"> <label
-											for="deleteall"> All </label>
-									</div>
-								</div>
+								
 								<div class="col-lg-5 col-md-5 col-6">
 									<div class="input-group search">
 										<input type="text" class="form-control"
@@ -316,6 +279,13 @@
 									<div
 										class="btn-group d-none d-lg-inline-block d-md-inline-block"
 										role="group">
+										
+										<button type="button" id="showAddModel"
+										class="btn col-black btn-neutral d-none d-lg-inline-block d-md-inline-block"
+										data-toggle="modal" data-target="#defaultModal">
+										<i class="zmdi zmdi-plus-circle"></i>
+									</button>
+									
 										<div class="btn-group">
 											<button type="button"
 												class="btn col-black btn-neutral dropdown-toggle"
@@ -334,18 +304,7 @@
 									</div>
 
 
-									<button type="button" id="showAddModel"
-										class="btn col-black btn-neutral d-none d-lg-inline-block d-md-inline-block"
-										data-toggle="modal" data-target="#defaultModal">
-										<i class="zmdi zmdi-plus-circle"></i>
-									</button>
-									<button type="button"
-										class="btn col-black btn-neutral d-none d-lg-inline-block d-md-inline-block">
-										<i class="zmdi zmdi-archive"></i>
-									</button>
-									<button type="button" class="btn col-black btn-neutral">
-										<i class="zmdi zmdi-delete"></i>
-									</button>
+									
 								</div>
 							</div>
 						</div>
@@ -358,7 +317,7 @@
 										<table class="table table-hover m-b-0 c_list">
 											<thead>
 												<tr>
-													<th>#</th>
+													<th>Class ID#</th>
 													<th>Name</th>
 													<th>Type</th>
 													<th>Department</th>
@@ -400,15 +359,7 @@
 				</div>
 				<div class="modal-body">
 
-					<div class="col-sm-12">
-						<div class="form-group">
 
-							<select class="form-control " id="deptSelect">
-								<option value="">-- Department --</option>
-
-							</select>
-						</div>
-					</div>
 
 					<div class="col-sm-12">
 						<div class="form-group">

@@ -79,6 +79,7 @@ public class TimeTableWithoutRoomController {
 		RequestSlots requestSlots = requestSlotsDAOImpl.getRecordById(id);
 		System.out.println(requestSlots.getAssignSubject().getSubject().getName());
 		modele.addAttribute("requestslots", requestSlots);
+		modele.addAttribute("requestslots_id",requestslots_id);
 		List<TimeSlotDaily> timeslotdailylist = timeslotdailydaoimpl.getAllRecords();
 		 modele.addAttribute("TimeslotDaily", timeslotdailylist);
 		return "slots-page";
@@ -124,11 +125,13 @@ public class TimeTableWithoutRoomController {
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
 	    }
-		
+	    timetablewithoutroom.setCommited(0);
+	    timetablewithoutroom.setOutsider(1);
 	    timetablewithoutroom.setCreatedAt(date);
 	    timetablewithoutroom.setUpdatedAt(date);
 	    timetablewithoutroom.setCreatedBy(0);
 	    timetablewithoutroom.setUpdatedBy(0);
+	    
 	    timetablewithoutroom.setActive(1);
 	    timetablewithoutroomdaoimpl.addRecord(timetablewithoutroom);
 		return ResponseEntity.ok("OK");

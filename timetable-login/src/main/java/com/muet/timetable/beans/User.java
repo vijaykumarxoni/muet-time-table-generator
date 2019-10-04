@@ -22,11 +22,7 @@ public class User extends Bean  implements Serializable {
 
     private String email;
     
-    @JsonBackReference
-     @OneToOne(cascade = CascadeType.ALL)
-	 @JoinColumn(name = "teacher_id", referencedColumnName = "id")
-	 private Teacher teacher;
-    
+   
     
     @Column(name="admin_role")
     private String adminRole;
@@ -35,6 +31,13 @@ public class User extends Bean  implements Serializable {
     @ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "dept_id",referencedColumnName="id")
 	private Department department;
+	
+    
+    @JsonBackReference
+    @OneToOne(cascade = CascadeType.ALL)
+	 @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+	 private Teacher teacher;
+   
 	
 
     public Department getDepartment() {

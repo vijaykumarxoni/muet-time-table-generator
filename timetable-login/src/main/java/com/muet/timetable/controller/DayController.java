@@ -1,5 +1,6 @@
 package com.muet.timetable.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,24 +21,42 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muet.timetable.beans.Day;
 import com.muet.timetable.daoImpl.DayDAOImpl;
+import com.muet.timetable.daoImpl.UserDAOImpl;
+
+
+
 
 @Controller
 @RequestMapping("/day")
-
 public class DayController {
 
 	@Autowired
 	DayDAOImpl dayDAOImpl;
+	
+	@Autowired
+	UserDAOImpl userDAO;
 
 	@RequestMapping("")
-	public String DayPage(Model modele) {
+	public String DayPage(Model modele,Principal principal) {
+		
+		String adminRole=userDAO.findByUsername(principal.getName()).getAdminRole();
+		if (adminRole.equals("SuperAdmin")) {
+			modele.addAttribute("request", "SuperAdmin");
+		}
 		return "day-page";
 	}
 
 	@PostMapping("/getall")
 	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
-		Pageable pageable = new PageRequest(page, 4, Direction.ASC, "id");
+		Pageable pageable = new PageRequest(page, 7, Direction.ASC, "id");
 		return ResponseEntity.ok(dayDAOImpl.getAllRecords(pageable));
+
+	}
+	
+	@PostMapping("/getTotalAdmin")
+	public ResponseEntity<?> getTotalAdmin() {
+		
+		return ResponseEntity.ok(dayDAOImpl.getAllRecords().size());
 
 	}
 	

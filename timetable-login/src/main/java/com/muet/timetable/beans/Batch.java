@@ -1,4 +1,4 @@
-package com.muet.timetable.beans;
+ package com.muet.timetable.beans;
 
 
 import java.io.Serializable;
@@ -28,7 +28,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
+@Component
 @Where(clause = "active =1")
 @Entity
 @Table(name = "batch")
@@ -50,8 +50,23 @@ public class Batch extends Bean implements Serializable {
 	@JoinColumn(name = "dept_id",referencedColumnName="id")
 	private Department dept;
 	
+	@NotNull
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "current_semester_id",referencedColumnName="id")
+	private Semester currentSemester;
 	
 	
+	
+	
+	
+	public Semester getCurrentSemester() {
+		return currentSemester;
+	}
+
+	public void setCurrentSemester(Semester currentSemester) {
+		this.currentSemester = currentSemester;
+	}
+
 	@JsonManagedReference
 	 @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Section> sections ;

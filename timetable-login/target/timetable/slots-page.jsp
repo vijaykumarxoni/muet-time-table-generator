@@ -28,7 +28,6 @@
 <jsp:include page="common/left-bar.jsp"></jsp:include>
 <jsp:include page="common/header.jsp"></jsp:include>
 	<jsp:include page="common/right-bar.jsp"></jsp:include>
-	<jsp:include page="common/chat-box.jsp"></jsp:include>
 
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
@@ -73,12 +72,12 @@
                     <div class="header">
                         <h2>
                         
-                             <strong>From :- <c:out value="Department Of Software Engineerring" /></strong>
-                             <input type="hidden" name="totalCreditHours" id="totalCreditHours" value="${Notificationobject.assignsubject.subject.credit_hour}">
-                             <input type="hidden" name="assignsubjectid" id="assignsubjectid" value="${Notificationobject.assignsubject.id}">
-                             <input type="hidden" name="teacherid" id="teacherid" value="${Notificationobject.teacher.id}">
-                             <input type="hidden" name="userid" id="userid" value="${Notificationobject.user_sender.id}">
-                             <small style="color:black;"> Details :- <c:out value="${Notificationobject.description}" />for the subject <c:out value="${Notificationobject.assignsubject.subject.name}" /></small> 
+                             <strong>From :- <c:out value="Department Of ${requestslots.sender.department.name}" /></strong>
+                             <input type="hidden" name="totalCreditHours" id="totalCreditHours" value="${requestslots.assignSubject.subject.credit_hour}">
+                             <input type="hidden" name="assignsubjectid" id="assignsubjectid" value="${requestslots.assignSubject.id}">
+                             <input type="hidden" name="teacherid" id="teacherid" value="${requestslots.user.id}">
+                             <input type="hidden" name="userid" id="userid" value="${requestslots.sender.id}">
+                             <small style="color:black;"> <c:out value="${requestslots.assignSubject.subject.name}" /></small> 
                           </h2>
                     </div>
                    
@@ -132,20 +131,14 @@
         </div>     
            <div class="row">
             <div class="col-lg-12 col-md-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                         <div class="form-group">
- 								<strong>My Message</strong><br>                              
- 						  </div> 
-                          <div class="form-group">
-                                    <input type="text" class="form-control" id="description" placeholder="Description">
-                          </div>                          
-                        </h2>
-                    </div>
-                   
-                </div>
-                <button class="btn btn-success btn-sm btn-success btn-round waves-effect" id="Submitslots" >Submit</button>
+                
+                <button class="btn btn-success btn-sm btn-success btn-round waves-effect" id="Submitslots" >Submit Slots</button>
+                 <button class="btn btn-success btn-sm btn-warning btn-round waves-effect" id="clear" >Clear</button>
+                
+      </div>    
+      <div class="col-lg-12 col-md-12">
+                
+               
                 
       </div>    
     </div>
@@ -180,7 +173,7 @@
     	var recieverid =  $('#userid').val();
     	var desc = $('#description').val();
     	var assignsubjectid = $('#assignsubjectid').val();
-    	$.ajax({
+/*     	$.ajax({
 
 			url : 'notificationresponse/save',
 			type : 'post',
@@ -201,7 +194,7 @@
 			}
 
 		}); //ajax end
-    	
+ */    	
     }    
     
     
@@ -236,7 +229,7 @@
     		}
     		else{
 
-        		alert("The count value is "+count);
+        //		alert("The count value is "+count);
 
     		if(checkInRow(id)==false){
     			arr[count]=id;
@@ -277,6 +270,12 @@
     
     
     $(document).ready(function() {
+    	
+    	$('#clear').click(function() {
+    		location.reload();
+    		
+    	});
+    	
     	$('#Submitslots').click(function() {
     		var assignsubjectid = $('#assignsubjectid').val();
 
@@ -306,9 +305,52 @@
     			}
 
     		}); //ajax end
+    		
+
+
+    		
+    		
+    		
+    		
+    		
+    		
         	}
     		addnotification();
+    		
+    		
+    		
+    		
+    		//REQUEST SLOTS DEACTIVATE
+    		var requestslots_id='${requestslots_id}';
+//    		alert(requestslots_id);
+    		
+     		$.ajax({
+
+    			url : 'requestslots/deactive',
+    			type : 'post',
+    			
+    			data : {
+    				
+    				'id' : requestslots_id,
+    			},
+    			success : function(msg) {
+    				
+    				alert(msg);
+    				
+    					
+    				
+    			}
+
+    		}); //ajax end
+    		
+    		
+    		
+    		
     	}); //addbtnclick end
+    	
+		
+
+
     	
     }); // ready end
 </script>

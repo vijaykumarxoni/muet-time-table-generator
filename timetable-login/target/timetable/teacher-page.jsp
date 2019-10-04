@@ -20,7 +20,7 @@
 <meta name="description"
 	content="Responsive Bootstrap 4 and web Application ui kit.">
 
-<title>:: MUET University Admin ::</title>
+<title>Teachers :: MUET Timetable</title>
 <!-- Favicon-->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet"
@@ -39,29 +39,7 @@
 <script type="text/javascript">
         var rowId = "";
 
-function getSelectOptions() {
 
-	$.ajax({
-
-		url : 'department/getList',
-		type : 'post',
-		async:'false',
-		success : function(msg) {
-			var options = "";
-			options += "<option value='-1'>-- Department --</option>";
-
-			for (x in msg) {
-				options += "<option value='"+msg[x].id+"'>" + msg[x].name
-						+ "</option>";
-
-			}
-
-			$("#selectdept").html(options);
-		}
-
-	});
-
-}
 
 
 function getRow(id) {
@@ -81,7 +59,7 @@ function getRow(id) {
 			$('#password').val(msg.password);
 			$('#designation').val(msg.designation);
 			$('#contact').val(msg.contact);
-			$("#selectdept").val(msg.dept.id).change();
+
 			$("#designationSelect").val(msg.designation).change();
 			$("#gender").val(msg.gender).change();
 
@@ -132,7 +110,7 @@ function show(page) {
 						
 						rows += "<td>" + data[x].name + "</td>";
 						rows += "<td>" + data[x].email + "</td>";
-						rows += "<td>" + data[x].password + "</td>";
+						
 						rows += "<td>" + data[x].designation + "</td>";
 						rows += "<td>" + data[x].contact + "</td>";
 						rows += "<td>" + data[x].dept.name + "</td>";
@@ -193,12 +171,10 @@ function show(page) {
 
 								
 $(document).ready(function() {
-	getSelectOptions();
 	show(0);
 	$('#updateteacherBtn').hide();
 	$('#addteacherBtn').click(function() {
 		var name = $('#name').val();
-		var deptid = $('#selectdept').val();
 		var password = $('#password').val();
 		var designation = $('#designationSelect').val();
 		var gender = $("#gender").val();
@@ -218,7 +194,6 @@ $(document).ready(function() {
 			'designation' : designation,
 			'gender' : gender,
 			'contact' : contact,
-			'dept.id' : deptid,
 			
 			},
 		success : function(msg) {
@@ -228,7 +203,6 @@ $(document).ready(function() {
 		$('#designation').val("");
 		$("#gender:checked").val("");
 		$('#contact').val("");
-		$('#selectdept').val('-1').change()	
 				$('#designationSelect').val('-1').change()	
 
 		show(0);
@@ -243,7 +217,6 @@ $(document).ready(function() {
 	$('#updateteacherBtn').click(function() {
 
 		var name = $('#name').val();
-		var deptid = $('#selectdept').val();
 		var password = $('#password').val();
 		var designation = $('#designationSelect').val();
 		var gender = $("#gender").val();
@@ -261,7 +234,6 @@ $(document).ready(function() {
 				'designation' : designation,
 				'gender' : gender,
 				'contact' : contact,
-				'dept.id' : deptid,
 
 			},
 			success : function(msg) {
@@ -288,7 +260,6 @@ $(document).ready(function() {
 		$('#designation').val("");
 		$("#gender:checked").val("");
 		$('#contact').val("");
-		$("#selectdept").val('-1').change();
 		$("#designationSelect").val('-1').change();
 		$("#gender").val('-1').change();
 
@@ -315,19 +286,22 @@ $(document).ready(function() {
 	<!-- Overlay For Sidebars -->
 	<div class="overlay"></div>
 	<!-- Top Bar -->
-	<jsp:include page="common/header.jsp"></jsp:include>
+	
+<c:choose>
+  <c:when test="${request =='SuperAdmin'}">
+	  <jsp:include page="super_common/header.jsp"></jsp:include>
+	  <jsp:include page="super_common/left-bar.jsp"></jsp:include>
+	  <jsp:include page="super_common/right-bar.jsp"></jsp:include>
 
-
-
-
+  </c:when>
+  <c:otherwise>
+  	<jsp:include page="common/header.jsp"></jsp:include>
 	<jsp:include page="common/left-bar.jsp"></jsp:include>
-
-	<!-- Right Sidebar -->
-
 	<jsp:include page="common/right-bar.jsp"></jsp:include>
-	<jsp:include page="common/chat-box.jsp"></jsp:include>
-
-
+  </c:otherwise>
+</c:choose>
+	
+	
 
 	<!-- Main Content -->
 
@@ -336,17 +310,10 @@ $(document).ready(function() {
 			<div class="row">
 				<div class="col-lg-7 col-md-6 col-sm-12">
 					<h2>
-						Teachers <small>Welcome to MUET Time Table</small>
+						TEACHERS
 					</h2>
 				</div>
-				<div class="col-lg-5 col-md-6 col-sm-12">
-					<ul class="breadcrumb float-md-right">
-						<li class="breadcrumb-item"><a href="index.html"><i
-								class="zmdi zmdi-home"></i> MUET</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0);">App</a></li>
-						<li class="breadcrumb-item active">Teachers</li>
-					</ul>
-				</div>
+				
 			</div>
 		</div>
 		<div class="container-fluid">
@@ -356,12 +323,7 @@ $(document).ready(function() {
 					<div class="card action_bar">
 						<div class="body">
 							<div class="row clearfix">
-								<div class="col-lg-1 col-md-2 col-3">
-									<div class="checkbox inlineblock delete_all">
-										<input id="deleteall" type="checkbox"> <label
-											for="deleteall"> All </label>
-									</div>
-								</div>
+								
 								<div class="col-lg-5 col-md-5 col-6">
 									<div class="input-group search">
 										<input type="text" class="form-control"
@@ -375,12 +337,12 @@ $(document).ready(function() {
 										class="btn-group d-none d-lg-inline-block d-md-inline-block"
 										role="group">
 										<div class="btn-group">
-											<button type="button"
-												class="btn col-black btn-neutral dropdown-toggle"
-												data-toggle="dropdown" aria-haspopup="true"
-												aria-expanded="false">
-												<i class="zmdi zmdi-label"></i> <span class="caret"></span>
-											</button>
+										<button type="button" id="showAddModel"
+										class="btn col-black btn-neutral d-none d-lg-inline-block d-md-inline-block"
+										data-toggle="modal" data-target="#defaultModal">
+										<i class="zmdi zmdi-plus-circle"></i>
+									</button>
+											
 											<ul class="dropdown-menu dropdown-menu-right pullDown">
 												<li><a href="javascript:void(0);">Family</a></li>
 												<li><a href="javascript:void(0);">Work</a></li>
@@ -389,21 +351,18 @@ $(document).ready(function() {
 												<li><a href="javascript:void(0);">Create a Label</a></li>
 											</ul>
 										</div>
+										
+										<button type="button"
+												class="btn col-black btn-neutral dropdown-toggle"
+												data-toggle="dropdown" aria-haspopup="true"
+												aria-expanded="false">
+												<i class="zmdi zmdi-label"></i> <span class="caret"></span>
+											</button>
 									</div>
 
 
-									<button type="button" id="showAddModel"
-										class="btn col-black btn-neutral d-none d-lg-inline-block d-md-inline-block"
-										data-toggle="modal" data-target="#defaultModal">
-										<i class="zmdi zmdi-plus-circle"></i>
-									</button>
-									<button type="button"
-										class="btn col-black btn-neutral d-none d-lg-inline-block d-md-inline-block">
-										<i class="zmdi zmdi-archive"></i>
-									</button>
-									<button type="button" class="btn col-black btn-neutral">
-										<i class="zmdi zmdi-delete"></i>
-									</button>
+									
+									
 								</div>
 							</div>
 						</div>
@@ -417,11 +376,10 @@ $(document).ready(function() {
 											<thead>
 												<tr>
 												
-													<th>#</th>
+													<th>Teacher ID#</th>
 													
 													<th>Name</th>
 													<th>Email</th>
-													<th>Password</th>
 													<th>Designation</th>
 													<th>Contact</th>
 													<th>Department</th>
@@ -464,16 +422,6 @@ $(document).ready(function() {
 				</div>
 				<div class="modal-body">
 
-						<div class="col-sm-12">
-						<div class="form-group">
-					   
-							<select class="form-control " id="selectdept">
-							
-							</select>
-							
-						</div>
-					</div>
-					
 					
 					<div class="col-sm-12">
 						<div class="form-group">

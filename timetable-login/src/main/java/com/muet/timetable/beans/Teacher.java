@@ -23,6 +23,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Where(clause = "active =1")
 @Entity
 @Table(name = "teacher")
@@ -54,6 +56,7 @@ public class Teacher extends Bean{
 	@Column(name = "contact")
 	private String contact;
 	
+	@JsonBackReference
 	@OneToOne(mappedBy = "teacher")
 	private User user;
 

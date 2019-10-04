@@ -46,7 +46,7 @@ public class DepartmentController {
 
 	@PostMapping("/getall")
 	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
-		Pageable pageable = new PageRequest(page, 4, Direction.DESC, "id");
+		Pageable pageable = new PageRequest(page, 10, Direction.DESC, "id");
 		return ResponseEntity.ok(departmentDAOImpl.getAllRecords(pageable));
 
 	}
@@ -54,6 +54,12 @@ public class DepartmentController {
 	@PostMapping("/getList")
 	public ResponseEntity<?> getList() {
 		return ResponseEntity.ok(departmentDAOImpl.getAllRecords());
+
+	}
+	
+	@PostMapping("/getTotalAdmin")
+	public ResponseEntity<?> getTotalAdmin() {
+		return ResponseEntity.ok(departmentDAOImpl.getAllRecords().size());
 
 	}
 

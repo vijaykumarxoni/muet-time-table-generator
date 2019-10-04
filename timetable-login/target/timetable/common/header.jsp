@@ -15,7 +15,7 @@
 			<li>
 				<div class="navbar-header">
 					<a href="javascript:void(0);" class="bars"></a> <a
-						class="navbar-brand" href="index.html"><img
+						class="navbar-brand" href="/"><img
 						src="assets/images/logo.svg" width="30" alt="Oreo"><span
 						class="m-l-10">MUET Time Table Automation System</span></a>
 				</div>

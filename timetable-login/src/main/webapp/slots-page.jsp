@@ -15,7 +15,7 @@
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-<title>:: Muet University Admin ::</title>
+<title>Pick Slots:: Muet Timetable ::</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <!-- Favicon-->
 <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
@@ -25,10 +25,9 @@
 <link rel="stylesheet" href="assets/css/color_skins.css">
 </head>
 <body class="theme-blush">
-<jsp:include page="common/left-bar.jsp"></jsp:include>
-<jsp:include page="common/header.jsp"></jsp:include>
-	<jsp:include page="common/right-bar.jsp"></jsp:include>
-	<jsp:include page="common/chat-box.jsp"></jsp:include>
+<jsp:include page="teacher_common/left-bar.jsp"></jsp:include>
+<jsp:include page="teacher_common/header.jsp"></jsp:include>
+	<jsp:include page="teacher_common/right-bar.jsp"></jsp:include>
 
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
@@ -51,17 +50,9 @@
     <div class="block-header">
         <div class="row">
             <div class="col-lg-7 col-md-6 col-sm-12">
-                <h2>Slots
-                <small>Welcome to Muet</small>
-                </h2>
+                <h2>PICK SLOTS</h2>
             </div>
-            <div class="col-lg-5 col-md-6 col-sm-12">
-                <ul class="breadcrumb float-md-right">
-                    <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Muet</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0);">App</a></li>
-                    <li class="breadcrumb-item active">Slots</li>
-                </ul>
-            </div>
+          
         </div>
     </div>
     <div class="container-fluid">  
@@ -132,20 +123,14 @@
         </div>     
            <div class="row">
             <div class="col-lg-12 col-md-12">
-                <div class="card">
-                    <div class="header">
-                        <h2>
-                         <div class="form-group">
- 								<strong>My Message</strong><br>                              
- 						  </div> 
-                          <div class="form-group">
-                                    <input type="text" class="form-control" id="description" placeholder="Description">
-                          </div>                          
-                        </h2>
-                    </div>
-                   
-                </div>
-                <button class="btn btn-success btn-sm btn-success btn-round waves-effect" id="Submitslots" >Submit</button>
+                
+                <button class="btn btn-success btn-sm btn-success btn-round waves-effect" id="Submitslots" >Submit Slots</button>
+                 <button class="btn btn-success btn-sm btn-warning btn-round waves-effect" id="clear" >Clear</button>
+                
+      </div>    
+      <div class="col-lg-12 col-md-12">
+                
+               
                 
       </div>    
     </div>
@@ -180,7 +165,7 @@
     	var recieverid =  $('#userid').val();
     	var desc = $('#description').val();
     	var assignsubjectid = $('#assignsubjectid').val();
-    	$.ajax({
+/*     	$.ajax({
 
 			url : 'notificationresponse/save',
 			type : 'post',
@@ -201,7 +186,7 @@
 			}
 
 		}); //ajax end
-    	
+ */    	
     }    
     
     
@@ -236,7 +221,7 @@
     		}
     		else{
 
-        		alert("The count value is "+count);
+        //		alert("The count value is "+count);
 
     		if(checkInRow(id)==false){
     			arr[count]=id;
@@ -277,6 +262,12 @@
     
     
     $(document).ready(function() {
+    	
+    	$('#clear').click(function() {
+    		location.reload();
+    		
+    	});
+    	
     	$('#Submitslots').click(function() {
     		var assignsubjectid = $('#assignsubjectid').val();
 
@@ -301,14 +292,62 @@
     			},
     			success : function(msg) {
     				
+    				
+    				
+
+    				
+    			}
+    			
+    			
+
+    		}); //ajax end
+    		
+
+
+    		
+    		
+    		
+    		
+    		
+    		
+        	}
+    		addnotification();
+    		
+    		
+    		
+    		
+    		//REQUEST SLOTS DEACTIVATE
+    		var requestslots_id='${requestslots_id}';
+//    		alert(requestslots_id);
+    		
+     		$.ajax({
+
+    			url : 'requestslots/deactive',
+    			type : 'post',
+    			
+    			data : {
+    				
+    				'id' : requestslots_id,
+    			},
+    			success : function(msg) {
+    				
+    				alert(msg);
+    				location.assign("http://localhost:8080/");
+
     					
     				
     			}
 
     		}); //ajax end
-        	}
-    		addnotification();
+    		
+    		
+    		
+    		
     	}); //addbtnclick end
+    	
+		
+
+
     	
     }); // ready end
 </script>

@@ -12,6 +12,7 @@ import com.muet.timetable.repository.RoleRepository;
 import com.muet.timetable.repository.UserRepository;
 
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 public class UserDAOImpl implements UserDAO {
@@ -25,7 +26,6 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<Role>(roleRepository.findAll()));
         userRepository.save(user);
     }
 
@@ -33,4 +33,10 @@ public class UserDAOImpl implements UserDAO {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+/*	@Override
+	public List<User> getAllRecords() {
+		// TODO Auto-generated method stub
+		return userRepository.findAll();
+	}*/
 }

@@ -43,13 +43,16 @@ function getSelectOptionsforbatch() {
 
 	$.ajax({
 
-		url : 'batch/getList',
+		url : 'batch/getListByDept',
 		type : 'post',
+		async : false,
+
 		success : function(msg) {
 			var options = "";
 			options += "<option value='-1'>-- Batch --</option>";
 
 			for (x in msg) {
+				alert(msg[x].name)
 				options += "<option value='"+msg[x].id+"'>" + msg[x].name
 						+ "</option>";
 
@@ -86,7 +89,6 @@ function getRow(id) {
 
 
 function deleteRow(id) {
-	alert("The id is "+id);
 	$.ajax({
 
 		url : 'section/delete',
@@ -110,6 +112,9 @@ function show(page) {
 				data : 'page=' + page,
 
 				success : function(msg) {
+					
+					
+					
 					var rows = "";
 					var pages = "";
 					var data = msg.content;
@@ -117,9 +122,11 @@ function show(page) {
 					var totalPages = parseInt(msg.totalPages);
 
 					for (x in data) {
+						
+						alert(data[x]);
 						rows += "<tr>";
 						rows += "<td>" + data[x].id + "</td>";
-						rows += "<td>" + data[x].batch.name + "</td>";
+						
 						rows += "<td>" + data[x].name + "</td>";
 
 						rows += "<td>";
@@ -135,6 +142,7 @@ function show(page) {
 						rows += "<tr>";
 
 					}
+					alert(rows)
 
 					$("#sectionTblBody").html(rows);
 					pages += "<li class='page-item'><a class='page-link' href='javascript:show("
@@ -408,7 +416,7 @@ $(document).ready(function() {
 						<div class="form-group">
 					   
 							<select class="form-control " id="selectbatch">
-							
+							<option value='-1'>-- Batch --</option>
 							</select>
 							
 						</div>

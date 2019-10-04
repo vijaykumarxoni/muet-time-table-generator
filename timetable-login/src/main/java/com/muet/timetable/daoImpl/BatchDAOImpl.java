@@ -1,4 +1,4 @@
-package com.muet.timetable.daoImpl;
+ package com.muet.timetable.daoImpl;
 
 import java.util.List;
 
@@ -23,9 +23,9 @@ public class BatchDAOImpl implements BatchDAO {
 	@Autowired
 	BatchRepository batchrepository;
 
-	public Page<Batch> getAllRecords(Pageable pageable) {
+	public Page<Batch> getAllRecords(Department department,Pageable pageable) {
 		// TODO Auto-generated method stub
-		return batchrepository.findAll(pageable);
+		return batchrepository.getAllRecordsByDept(department, pageable);
 	}
 
 	public Batch getRecordById(Long id) {
@@ -62,6 +62,12 @@ public class BatchDAOImpl implements BatchDAO {
 	public List<Batch> getAllRecordsByDept(Department department) {
 		// TODO Auto-generated method stub
 		return (List<Batch>) batchrepository.getAllRecordsByDept(department);
+	}
+
+	@Override
+	public Page<Batch> getAllRecords(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return batchrepository.findAll(pageable);
 	}
 
 }

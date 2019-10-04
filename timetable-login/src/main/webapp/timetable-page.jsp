@@ -18,7 +18,7 @@
          name="viewport">
       <meta name="description"
          content="Responsive Bootstrap 4 and web Application ui kit.">
-      <title>:: MUET University Admin ::</title>
+      <title>Timetable :: MUET Timetable</title>
       <!-- Favicon-->
       <link rel="icon" href="favicon.ico" type="image/x-icon">
       <link rel="stylesheet"
@@ -81,13 +81,13 @@
         	  	$('.send-msg').click(function(event){
         	    	//	$('#chat-btn').toggleClass("chat-launcher active");
         	    		//$('#chat').addClass("is-open pullUp");
-        	    	  
+        	    	 
 				        //alert(event.target.id);
 				        
 				         reciver_id=event.target.id;
 				       teacher_id=this.getAttribute("data-teacher");
 				        assign_subject_id=this.getAttribute("data-assign-subject");
-				      //alert(teacher_id);
+				      alert(teacher_id);
 
         	    		//addClass
         	    		var all_msgs="";
@@ -100,7 +100,7 @@
         	    				success:function(msg){
         	    					teacher_name=msg.name;
         	    					$('#teacher-name').text(teacher_name);
-        	    					//alert(assign_subject_id);
+        	    					 alert('ok');
         	    					$.ajax({
                 	    				
                 	    				url:'notification/getConversation',
@@ -317,17 +317,10 @@
             <div class="row">
                <div class="col-lg-7 col-md-6 col-sm-12">
                   <h2>
-                     Time Table <small>Welcome to MUET Time Table </small>
+                     TIME TABLE GENERATION 
                   </h2>
                </div>
-               <div class="col-lg-5 col-md-6 col-sm-12">
-                  <ul class="breadcrumb float-md-right">
-                     <li class="breadcrumb-item"><a href="index.html"><i
-                        class="zmdi zmdi-home"></i> MUET</a></li>
-                     <li class="breadcrumb-item"><a href="javascript:void(0);">App</a></li>
-                     <li class="breadcrumb-item active">Time Table</li>
-                  </ul>
-               </div>
+               
             </div>
          </div>
          <div class="container-fluid">

@@ -1,29 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+	
+	
+	
+	
+	<script>
+		$(document).ready(function(){
+			$('#send').click(function(){
+				var msg = $('#msg').val();
+				alert(msg);
+			});
+		})
+	
+	</script>
+	
 	<!-- Chat-launcher -->
-	<div class="chat-launcher"></div>
-	<div class="chat-wrapper">
+	<div class="chat-launcher" id="chat-btn" ></div>
+	<div class="chat-wrapper" id="chating-area" >
 		<div class="card">
 			<div class="header">
 				<ul class="list-unstyled team-info margin-0">
-					<li class="m-r-15"><h2>Pro. Team</h2></li>
-					<li><img src="assets/images/xs/avatar2.jpg" alt="Avatar">
-					</li>
-					<li><img src="assets/images/xs/avatar3.jpg" alt="Avatar">
-					</li>
-					<li><img src="assets/images/xs/avatar4.jpg" alt="Avatar">
-					</li>
-					<li><img src="assets/images/xs/avatar6.jpg" alt="Avatar">
-					</li>
-					<li><a href="javascript:void(0);" title="Add Member"><i
-							class="zmdi zmdi-plus-circle"></i></a></li>
+					<li class="m-r-15"><h2>Sir Salah</h2></li>
+					
 				</ul>
 			</div>
 			<div class="body">
@@ -32,7 +30,7 @@
 						<li class="left float-left"><img
 							src="assets/images/xs/avatar3.jpg" class="rounded-circle" alt="">
 							<div class="chat-info">
-								<a class="name" href="javascript:void(0);">Alexander</a> <span
+								<a class="name" href="javascript:void(0);">Alexanders</a> <span
 									class="datetime">6:12</span> <span class="message">Hello,
 									John </span>
 							</div></li>
@@ -73,15 +71,17 @@
 						</li>
 					</ul>
 				</div>
+				
+					
 				<div class="input-group p-t-15">
+				
+				<input type="button" class="btn btn-success" value="Request for slots"
+						  id="msg" >
 					<input type="text" class="form-control"
-						placeholder="Enter text here..."> <span
-						class="input-group-addon"> <i class="zmdi zmdi-mail-send"></i>
+						placeholder="Enter text here..."  id="msg" > <span
+						class="input-group-addon"> <i class="zmdi zmdi-mail-send" id="send"></i>
 					</span>
 				</div>
 			</div>
 		</div>
 	</div>
-
-</body>
-</html>

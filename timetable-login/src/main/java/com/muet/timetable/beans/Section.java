@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-
+@Component
 @Where(clause = "active = 1")
 @Entity
 @Table(name = "section")
@@ -29,6 +29,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Section extends Bean implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")

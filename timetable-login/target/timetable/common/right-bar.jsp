@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+    
+    
+    
+  
+
 <aside id="rightsidebar" class="right-sidebar">
 		<ul class="nav nav-tabs">
 			<li class="nav-item"><a class="nav-link active"
@@ -152,11 +150,11 @@
 						<h6>Recent</h6>
 						<ul class="list-unstyled">
 							<li class="online"><a href="javascript:void(0);">
-									<div class="media">
+									<div class="media" id="xyz" >
 										<img class="media-object " src="assets/images/xs/avatar4.jpg"
 											alt="">
 										<div class="media-body">
-											<span class="name">Sophia</span> <span class="message">There
+											<span class="name" >Sophia</span> <span class="message">There
 												are many variations of passages of Lorem Ipsum available</span> <span
 												class="badge badge-outline status"></span>
 										</div>
@@ -411,5 +409,3 @@
 			</div>
 		</div>
 	</aside>
-</body>
-</html>

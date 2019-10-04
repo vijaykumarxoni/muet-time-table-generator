@@ -16,9 +16,10 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.stereotype.Component;
 
 
-
+@Component
 @Where(clause = "active =1")
 @Entity
 @Table(name = "timetablewithoutroom")
@@ -42,6 +43,44 @@ public class TimeTableWithoutRoom extends Bean implements Serializable {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "time_slot_id",referencedColumnName="id")
 	private TimeSlot timeslot;
+	
+	
+	@Column(name = "approved_by_teacher")
+	private int   approvedByTeacher;
+	
+	@Column(name = "outsider")
+	private int   outsider;
+	
+	@Column(name = "commited")
+	private int   commited;
+	
+	
+	
+	
+
+	public int getCommited() {
+		return commited;
+	}
+
+	public void setCommited(int commited) {
+		this.commited = commited;
+	}
+
+	public int getOutsider() {
+		return outsider;
+	}
+
+	public void setOutsider(int outsider) {
+		this.outsider = outsider;
+	}
+
+	public int getApprovedByTeacher() {
+		return approvedByTeacher;
+	}
+
+	public void setApprovedByTeacher(int approvedByTeacher) {
+		this.approvedByTeacher = approvedByTeacher;
+	}
 
 	public Long getId() {
 		return id;

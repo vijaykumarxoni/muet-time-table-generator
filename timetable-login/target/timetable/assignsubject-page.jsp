@@ -35,7 +35,7 @@
 	rel="stylesheet" />
 
 <link rel="stylesheet" href="assets/css/color_skins.css">
-<script src="/assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.min.js"></script>
 
 </head>
 <body class="theme-blush">
@@ -154,7 +154,7 @@
 											<thead>
 												<tr>
 													<th>#</th>
-													
+
 													<th>Send Notification</th>
 													<th>Subject</th>
 													<th>Teacher</th>
@@ -198,63 +198,19 @@
 					<h4 class="title" id="defaultModalLabel">Add Section</h4>
 				</div>
 				<div class="modal-body">
-
-					<div class="col-sm-12">
+									<div class="col-sm-12">
 						<div class="form-group">
 
-							<select class="form-control " id="selectsubject">
+							<select class="form-control " id="selectDept">
 
 							</select>
 
 						</div>
 					</div>
-
-					<div class="col-sm-12">
-						<div class="form-group">
-
-							<select class="form-control " id="selectteacher">
-
-							</select>
-
-						</div>
-					</div>
-
-					<div class="col-sm-12">
-						<div class="form-group">
-
-							<select class="form-control " id="selectbatch">
-
-							</select>
-
-						</div>
-					</div>
-
-					<div class="col-sm-12">
-						<div class="form-group">
-
-							<select class="form-control " id="selectSection">
-
-							</select>
-
-						</div>
-					</div>
+<div  id="model-body-box">
 
 
-
-					<div class="col-sm-12">
-						<div class="form-group">
-
-							<select class="form-control " id="selectsemester">
-
-							</select>
-
-						</div>
-					</div>
-
-
-
-
-
+					
 
 				</div>
 				<div class="modal-footer">
@@ -269,6 +225,7 @@
 					<button type="button" class="btn btn-danger waves-effect"
 						data-dismiss="modal">Close</button>
 				</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -278,13 +235,38 @@
 	<script type="text/javascript">
 		var rowId = "";
 
+		function getSelectOptionsforDepartment() {
+
+			$.ajax({
+
+				url : 'department/getList',
+				type : 'post',
+
+				async : false,
+
+				success : function(msg) {
+					var options = "";
+					options += "<option value='-1'>-- Department --</option>";
+
+					for (x in msg) {
+						options += "<option value='"+msg[x].id+"'>"
+								+ msg[x].name + "</option>";
+
+					}
+
+					$("#selectDept").html(options);
+				}
+
+			});
+
+		}
+
 		function getSelectOptionsforsubject() {
 
 			$.ajax({
 
 				url : 'subject/getList',
 				type : 'post',
-				async : false,
 
 				success : function(msg) {
 					var options = "";
@@ -303,20 +285,19 @@
 					}
 
 					$("#selectsubject").html(options);
-					getSelectOptionsforteacher();
 				}
 
 			});
 
 		}
 
-		function getSelectOptionsforteacher() {
+		function getSelectOptionsforteacher(deptId) {
 
 			$.ajax({
 
 				url : 'teacher/getList',
 				type : 'post',
-				async : false,
+				data : 'deptId=' + deptId,
 
 				success : function(msg) {
 					var options = "";
@@ -329,61 +310,51 @@
 					}
 
 					$("#selectteacher").html(options);
-					getSelectOptionsForSection();
 				}
 
 			});
 
 		}
-		function getSelectOptionsForSection() {
+		function getSelectOptionsforSection() {
 
+			var batchId = $("#selectBatch").val();
 			$.ajax({
 
-				url : 'section/getList',
-				type : 'post',
-				async : false,
+						url : 'batch/getList',
+						method : "POST",
+						data : {
+							'deptId' : departmentId
+						},
 
-				success : function(msg) {
-					var options = "";
-					options += "<option value='-1'>-- Section --</option>";
+						success : function(
+								msg) {
+							populateOptionsInSelect(msg,"selectSection","Section")
 
-					for (x in msg) {
-						options += "<option value='"+msg[x].id+"'>"
-								+ msg[x].name + "</option>";
+						}
 
-					}
+					});
 
-					$("#selectSection").html(options);
-					getSelectOptionsforbatch();
-				}
-
-			});
 
 		}
 
 		function getSelectOptionsforbatch() {
-
+			var departmentId = $("#selectDept").val();
 			$.ajax({
 
-				url : 'batch/getList',
-				type : 'post',
-				async : false,
+						url : 'batch/getList',
+						method : "POST",
+						data : {
+							'deptId' : departmentId
+						},
 
-				success : function(msg) {
-					var options = "";
-					options += "<option value='-1'>-- Batch --</option>";
+						success : function(
+								msg) {
+							populateOptionsInSelect(msg,"selectBatch","Batch")
 
-					for (x in msg) {
-						options += "<option value='"+msg[x].id+"'>"
-								+ msg[x].name + "</option>";
+						}
 
-					}
+					});
 
-					$("#selectbatch").html(options);
-					getSelectOptionsforsemester();
-				}
-
-			});
 
 		}
 
@@ -393,8 +364,6 @@
 
 				url : 'semester/getList',
 				type : 'post',
-
-				async : false,
 
 				success : function(msg) {
 					var options = "";
@@ -437,8 +406,30 @@
 
 		}
 
+		function populateOptionsInSelect(msg,selectId,title){
+			var options = "";
+			options += "<div class='col-sm-12'>";
+			options += "<div class='form-group'>";
+
+			options += "<select  class='form-control' id='"+selectId+"'>";
+			options +="<option value='-1' >-- Select "+title+" --</option>";
+			for (x in msg) {
+				options += "<option value='"+msg[x].id+"'>"
+						+ msg[x].name
+						+ "</option>";
+
+			}
+
+			options += "	</select>";
+
+			options += "</div></div>";
+
+			$("#model-body-box").append(options)
+
+		}
+		
+		
 		function deleteRow(id) {
-			alert("The id is " + id);
 			$.ajax({
 
 				url : 'assignsubject/delete',
@@ -460,6 +451,7 @@
 						url : 'assignsubject/getall',
 						type : 'post',
 						data : 'page=' + page,
+						async : false,
 
 						success : function(msg) {
 							var rows = "";
@@ -478,9 +470,11 @@
 								}
 								rows += "<tr>";
 								rows += "<td>" + data[x].id + "</td>";
-								
-								rows += "<td><a href='notification?assign_id="+data[x].id+"'><i class='material-icons'>chat</i></button></a></td>";
-								
+
+								rows += "<td><a href='notification?assign_id="
+										+ data[x].id
+										+ "'><i class='material-icons'>chat</i></button></a></td>";
+
 								rows += "<td>" + data[x].subject.name + " ("
 										+ type + ")</td>";
 								rows += "<td>" + data[x].teacher.name + "</td>";
@@ -539,61 +533,87 @@
 
 		}
 
-		$(document).ready(
-				function() {
-					getSelectOptionsforsubject();
+		$(document).ready(function() {
 
-					show(0);
-					$('#updateassignsubjectBtn').hide();
-					$('#addassignsubjectBtn').click(function() {
+							
+							getSelectOptionsforDepartment();
 
-						var subjectid = $('#selectsubject').val();
-						var teacherid = $('#selectteacher').val();
-						var batchid = $('#selectbatch').val();
-						var semesterid = $('#selectsemester').val();
-						var sectionid = $('#selectSection').val();
 
-						$.ajax({
+							$("#selectDept").on("change",function() {
+												$("#model-body-box").html("");
+												getSelectOptionsforbatch();
+												});
+							$("#selectBatch").on("change",function() {
+								$("#model-body-box").html("");								
+								});
+			
 
-							url : 'assignsubject/save',
-							type : 'post',
-							data : {
 
-								'subject.id' : subjectid,
-								'teacher.id' : teacherid,
-								'batch.id' : batchid,
-								'semester.id' : semesterid,
-								'section.id' : sectionid,
 
-							},
-							success : function(msg) {
-								$("#selectsubject").val('-1').change();
-								$("#selectteacher").val('-1').change();
-								$("#selectbatch").val('-1').change();
-								$("#selectsemester").val('-1').change();
+							show(0);
+							$('#updateassignsubjectBtn').hide();
+							$('#addassignsubjectBtn').click(
+									function() {
 
-								show(0);
+										var subjectid = $('#selectsubject')
+												.val();
+										var teacherid = $('#selectteacher')
+												.val();
+										var batchid = $('#selectbatch').val();
+										var semesterid = $('#selectsemester')
+												.val();
+										var sectionid = $('#selectSection')
+												.val();
 
-								$('#defaultModal').modal('toggle');
+										$.ajax({
 
-							}
+											url : 'assignsubject/save',
+											type : 'post',
+											data : {
 
-						}); //ajax end
-					}); //addbtnclick end
+												'subject.id' : subjectid,
+												'teacher.id' : teacherid,
+												'batch.id' : batchid,
+												'semester.id' : semesterid,
+												'section.id' : sectionid,
 
-					$('#updateassignsubjectBtn').click(
-							function() {
+											},
+											success : function(msg) {
+												$("#selectsubject").val('-1')
+														.change();
+												$("#selectteacher").val('-1')
+														.change();
+												$("#selectbatch").val('-1')
+														.change();
+												$("#selectsemester").val('-1')
+														.change();
 
-								var subjectid = $('#selectsubject').val();
-								var teacherid = $('#selectteacher').val();
-								var batchid = $('#selectbatch').val();
-								var semesterid = $('#selectsemester').val();
-								var sectionid = $('#selectSection').val();
-								alert(subjectid + " " + teacherid + " "
-										+ batchid + " " + semesterid)
+												show(0);
 
-								$
-										.ajax({
+												$('#defaultModal').modal(
+														'toggle');
+
+											}
+
+										}); //ajax end
+									}); //addbtnclick end
+
+							$('#updateassignsubjectBtn').click(
+									function() {
+
+										var subjectid = $('#selectsubject')
+												.val();
+										var teacherid = $('#selectteacher')
+												.val();
+										var batchid = $('#selectbatch').val();
+										var semesterid = $('#selectsemester')
+												.val();
+										var sectionid = $('#selectSection')
+												.val();
+										alert(subjectid + " " + teacherid + " "
+												+ batchid + " " + semesterid)
+
+										$.ajax({
 
 											url : 'assignsubject/update',
 											type : 'post',
@@ -632,22 +652,21 @@
 
 										});//ajax end
 
-							});//updatebtnclick end
+									});//updatebtnclick end
 
-					$('#showAddModel').click(function() {
-						$('#updateassignsubjectBtn').hide();
-						$('#addassignsubjectBtn').show();
-						getSelectOptionsforsubject();
+							$('#showAddModel').click(function() {
+								$('#updateassignsubjectBtn').hide();
+								$('#addassignsubjectBtn').show();
 
-						$("#selectsubject").val('-1').change();
-						$("#selectteacher").val('-1').change();
-						$("#selectbatch").val('-1').change();
-						$("#selectsemester").val('-1').change();
-						$("#selectSection").val('-1').change();
+								$("#selectsubject").val('-1').change();
+								$("#selectteacher").val('-1').change();
+								$("#selectbatch").val('-1').change();
+								$("#selectsemester").val('-1').change();
+								$("#selectSection").val('-1').change();
 
-					});
+							});
 
-				}); // ready end
+						}); // ready end
 	</script>
 
 

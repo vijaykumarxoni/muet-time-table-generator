@@ -20,7 +20,7 @@
 <meta name="description"
 	content="Responsive Bootstrap 4 and web Application ui kit.">
 
-<title>:: MUET University Admin ::</title>
+<title>Batches :: MUET Timetable</title>
 <!-- Favicon-->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet"
@@ -43,20 +43,21 @@ function getSelectOptionsforbatch() {
 
 	$.ajax({
 
-		url : 'department/getList',
+		url : 'semester/getList',
 		type : 'post',
 		async:'false',
 		success : function(msg) {
 			var options = "";
-			options += "<option value='-1'>-- Department --</option>";
+			options += "<option value='-1'>-- Semesters --</option>";
 
 			for (x in msg) {
+			
 				options += "<option value='"+msg[x].id+"'>" + msg[x].name
 						+ "</option>";
 
 			}
 
-			$("#selectdept").html(options);
+			$("#selectsemester").html(options);
 		}
 
 	});
@@ -77,7 +78,7 @@ function getRow(id) {
 
 			$('#name').val(msg.name);
 			$('#year').val(msg.year);
-			$("#selectdept").val(msg.dept.id).change();
+			$("#selectsemester").val(msg.currentSemester.id).change();
 
 		}
 
@@ -118,10 +119,14 @@ function show(page) {
 					var totalPages = parseInt(msg.totalPages);
 
 					for (x in data) {
+						
 						rows += "<tr>";
 						rows += "<td>" + data[x].id + "</td>";
+						
+						rows += "<td>" + data[x].currentSemester.name + "</td>";
+						
 						rows += "<td>" + data[x].name + "</td>";
-						rows += "<td>" + data[x].dept.name + "</td>";
+						
 						rows += "<td>" + data[x].year + "</td>";
 
 						rows += "<td>";
@@ -182,7 +187,7 @@ $(document).ready(function() {
 	$('#updatebatchBtn').hide();
 	$('#addbatchBtn').click(function() {
 		var name = $('#name').val();
-		var deptid = $('#selectdept').val();
+		var semesterid = $('#selectsemester').val();
 		var year = $('#year').val();
 		
 		
@@ -193,7 +198,7 @@ $(document).ready(function() {
 			data : {
 				
 				'name' : name,
-				'dept.id' : deptid,
+				'currentSemester.id' : semesterid,
 				"year" : year,
 				
 			},
@@ -213,7 +218,8 @@ $(document).ready(function() {
 	$('#updatebatchBtn').click(function() {
 
 		var name = $('#name').val();
-		var dept = $("#selectdept").val();
+		var semesterid = $("#selectsemester").val();
+		alert(semesterid);
 		var year = $("#year").val();
 		$.ajax({
 
@@ -223,7 +229,7 @@ $(document).ready(function() {
 				'id' : rowId,
 				'name' : name,
 				'year' : year,
-				"dept.id" : dept,
+				"currentSemester.id" : semesterid,
 
 			},
 			success : function(msg) {
@@ -246,7 +252,7 @@ $(document).ready(function() {
 		getSelectOptionsforbatch();
         $('#name').val("");
 		$('#year').val("");
-		$("#selectdept").val('-1').change();
+		$("#selectsemester").val('-1').change();
 
 	});
 
@@ -270,16 +276,8 @@ $(document).ready(function() {
 	<div class="overlay"></div>
 	<!-- Top Bar -->
 	<jsp:include page="common/header.jsp"></jsp:include>
-
-
-
-
 	<jsp:include page="common/left-bar.jsp"></jsp:include>
-
-	<!-- Right Sidebar -->
-
 	<jsp:include page="common/right-bar.jsp"></jsp:include>
-	<jsp:include page="common/chat-box.jsp"></jsp:include>
 
 
 
@@ -290,17 +288,10 @@ $(document).ready(function() {
 			<div class="row">
 				<div class="col-lg-7 col-md-6 col-sm-12">
 					<h2>
-						Batches <small>Welcome to MUET Time Table</small>
+						BATCHES 
 					</h2>
 				</div>
-				<div class="col-lg-5 col-md-6 col-sm-12">
-					<ul class="breadcrumb float-md-right">
-						<li class="breadcrumb-item"><a href="index.html"><i
-								class="zmdi zmdi-home"></i> MUET</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0);">App</a></li>
-						<li class="breadcrumb-item active">Batches</li>
-					</ul>
-				</div>
+				
 			</div>
 		</div>
 		<div class="container-fluid">
@@ -310,12 +301,7 @@ $(document).ready(function() {
 					<div class="card action_bar">
 						<div class="body">
 							<div class="row clearfix">
-								<div class="col-lg-1 col-md-2 col-3">
-									<div class="checkbox inlineblock delete_all">
-										<input id="deleteall" type="checkbox"> <label
-											for="deleteall"> All </label>
-									</div>
-								</div>
+								
 								<div class="col-lg-5 col-md-5 col-6">
 									<div class="input-group search">
 										<input type="text" class="form-control"
@@ -370,9 +356,10 @@ $(document).ready(function() {
 										<table class="table table-hover m-b-0 c_list">
 											<thead>
 												<tr>
-													<th>#</th>
+													<th>Batch ID#</th>
+													<th>Current Semester</th>
 													<th>Name</th>
-													<th>Department</th>
+											
 													<th>Year</th>
 
 													<th data-breakpoints="xs">Action</th>
@@ -412,10 +399,10 @@ $(document).ready(function() {
 				</div>
 				<div class="modal-body">
 
-						<div class="col-sm-12">
+					<div class="col-sm-12">
 						<div class="form-group">
 					   
-							<select class="form-control " id="selectdept">
+							<select class="form-control " id="selectsemester">
 							
 							</select>
 							

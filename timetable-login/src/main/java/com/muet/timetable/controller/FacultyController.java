@@ -44,6 +44,12 @@ public class FacultyController {
 		return ResponseEntity.ok(facultyDAOImpl.getAllRecords(pageable));
 
 	}
+	@PostMapping("/getTotalAdmin")
+	public ResponseEntity<?> getTotalAdmin() {
+
+		return ResponseEntity.ok(facultyDAOImpl.getAllRecords().size());
+
+	}
 	
 	@PostMapping("/getList")
 	public ResponseEntity<?> getList() {

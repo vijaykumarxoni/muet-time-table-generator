@@ -13,6 +13,7 @@ import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Day;
 import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.RequestSlots;
+import com.muet.timetable.beans.User;
 import com.muet.timetable.dao.BatchDAO;
 import com.muet.timetable.dao.RequestSlotsDAO;
 import com.muet.timetable.repository.BatchRepository;
@@ -59,6 +60,12 @@ public class RequestSlotsDAOImpl implements RequestSlotsDAO {
 	public List<RequestSlots> getAllRecords() {
 		// TODO Auto-generated method stub
 		return (List<RequestSlots>) requestSlotsRepository.findAll();
+	}
+
+	@Override
+	public List<RequestSlots> getAllRecordsByUser(User u) {
+		// TODO Auto-generated method stub
+		return (List<RequestSlots>) requestSlotsRepository.getAllRecordsByUser(u);
 	}
 
 

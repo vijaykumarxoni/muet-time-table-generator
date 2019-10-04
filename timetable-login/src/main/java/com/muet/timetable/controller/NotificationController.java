@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.gson.Gson;
 import com.muet.timetable.beans.AssignSubject;
 import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.NotificationDetails;
@@ -42,6 +44,7 @@ import com.muet.timetable.daoImpl.SubjectDAOImpl;
 import com.muet.timetable.daoImpl.TeacherDAOImpl;
 import com.muet.timetable.daoImpl.TimeSlotDailyDAOImpl;
 import com.muet.timetable.daoImpl.UserDAOImpl;
+import com.muet.timetable.dto.NotificationDetailDTO;
 import com.muet.timetable.repository.UserRepository;
 
 @Controller
@@ -129,7 +132,41 @@ public class NotificationController {
 	@PostMapping("/getConversation")
 	public ResponseEntity<?> getConversation(@ModelAttribute NotificationDetails notificationdetails, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
-		return ResponseEntity.ok(notificationdaoimpl.getNotificationByAssignSubject(notificationdetails.getAssignsubject()));
+		
+		
+		Gson gson = new Gson();
+		ArrayList<NotificationDetailDTO> dtos = new ArrayList<NotificationDetailDTO>();
+
+		try {
+
+			notificationdaoimpl.getNotificationByAssignSubject(notificationdetails.getAssignsubject());
+
+			System.out.println(
+					notificationdaoimpl.getNotificationByAssignSubject(notificationdetails.getAssignsubject()));
+
+			for (NotificationDetails n : notificationdaoimpl
+					.getNotificationByAssignSubject(notificationdetails.getAssignsubject())) {
+
+				NotificationDetailDTO dto = new NotificationDetailDTO();
+				dto.setMessage(n.getDescription());
+				dto.setDatetime(n.getDatetime());
+				dto.setSenderId(n.getSender().getId() + "");
+				dto.setSenderName(n.getSender().getUsername() + "");
+
+				dto.setReciverId(n.getReciver().getId() + "");
+				dto.setReciverName(n.getSender().getUsername() + "");
+
+				dtos.add(dto);
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Reciver ID database me null hogi");
+
+		}
+
+		return ResponseEntity.ok(gson.toJson(dtos));
 
 	}
 

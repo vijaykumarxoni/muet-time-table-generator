@@ -57,6 +57,22 @@ public class TimeTableWithoutRoomDAOImpl {
 		// TODO Auto-generated method stub
 		return (List<TimeTableWithoutRoom>) timetablewithoutrepository.findAll();
 	}
+	
+	
+	public List<TimeTableWithoutRoom> getAllRecordsByAssignSubject(AssignSubject assignSubject) {
+		// TODO Auto-generated method stub
+		return (List<TimeTableWithoutRoom>) timetablewithoutrepository.get(assignSubject);
+	}
+	
+
+	public int deleteCommited(long id) {
+		// TODO Auto-generated method stub
+
+		timetablewithoutrepository.deleteCommited(id);
+		return 1;
+	}
+
+	
 
 	
 	

@@ -4,6 +4,7 @@ com\muet\timetable\beans\User.class
 com\muet\timetable\dao\SemesterDAO.class
 com\muet\timetable\repository\SectionRepository.class
 com\muet\timetable\daoImpl\FacultyDAOImpl.class
+com\muet\timetable\beans\DaySlots.class
 com\muet\timetable\controller\TimeTableGenerator.class
 com\muet\timetable\repository\RoleRepository.class
 com\muet\timetable\repository\SemesterRepository.class
@@ -21,6 +22,7 @@ com\muet\timetable\beans\Teacher.class
 com\muet\timetable\controller\DepartmentController.class
 com\muet\timetable\dao\DepartmentDAO.class
 com\muet\timetable\beans\Sidebar.class
+com\muet\timetable\controller\RequestSlotsController.class
 com\muet\timetable\daoImpl\RoleDAOImpl.class
 com\muet\timetable\controller\SubjectController.class
 com\muet\timetable\controller\RoomController.class
@@ -31,6 +33,7 @@ com\muet\timetable\dao\NotificationResponseDAO.class
 com\muet\timetable\controller\SlotApproveController.class
 com\muet\timetable\daoImpl\SecurityDAOImpl.class
 com\muet\timetable\controller\FacultyController.class
+com\muet\timetable\beans\RequestSlots.class
 com\muet\timetable\controller\SettingsController.class
 com\muet\timetable\repository\FacultyRepository.class
 com\muet\timetable\dao\TimeTableWithoutRoomDAO.class
@@ -41,7 +44,6 @@ com\muet\timetable\repository\BatchRepository.class
 com\muet\timetable\controller\SectionController.class
 com\muet\timetable\daoImpl\AssignSubjectDAOImpl.class
 com\muet\timetable\beans\Subject.class
-com\muet\timetable\controller\NotificationDetailsController.class
 com\muet\timetable\controller\TimeTableWithoutRoomController.class
 com\muet\timetable\controller\UserController.class
 com\muet\timetable\repository\DayRepository.class
@@ -51,6 +53,8 @@ com\muet\timetable\beans\Section.class
 com\muet\timetable\dao\TeacherDAO.class
 com\muet\timetable\dao\FacultyDAO.class
 com\muet\timetable\daoImpl\UserDetailsServiceImpl.class
+com\muet\timetable\dto\SubjectTransfer.class
+com\muet\timetable\dao\RequestSlotsDAO.class
 com\muet\timetable\repository\UserRepository.class
 com\muet\timetable\repository\TimeTableWithoutRoomRepository.class
 com\muet\timetable\daoImpl\TimeSlotDAOImpl.class
@@ -68,13 +72,17 @@ com\muet\timetable\beans\Department.class
 com\muet\timetable\controller\TeacherController.class
 com\muet\timetable\repository\TimeSlotDailyRepository.class
 com\muet\timetable\controller\DayController.class
+com\muet\timetable\daoImpl\RequestSlotsDAOImpl.class
+com\muet\timetable\controller\TeacherSlotsApprovalController.class
 com\muet\timetable\beans\NotificationDetails.class
 com\muet\timetable\beans\NotificationResponse.class
+com\muet\timetable\repository\RequestSlotsRepository.class
 com\muet\timetable\daoImpl\TimeSlotDailyDAOImpl.class
 com\muet\timetable\dao\TimeSlotDAO.class
 com\muet\timetable\dao\DayDAO.class
 com\muet\timetable\dao\TimeSlotDailyDAO.class
 com\muet\timetable\RoomApplication.class
+com\muet\timetable\controller\GeneratorController.class
 com\muet\timetable\repository\DepartmentRepository.class
 com\muet\timetable\controller\BatchController.class
 com\muet\timetable\WebSecurityConfig.class

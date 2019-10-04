@@ -18,7 +18,9 @@ import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.stereotype.Component;
 
+@Component
 @Where(clause = "active =1")
 @Entity
 @Table(name = "day")

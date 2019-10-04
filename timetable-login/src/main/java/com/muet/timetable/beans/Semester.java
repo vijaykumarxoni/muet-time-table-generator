@@ -38,8 +38,11 @@ public class Semester extends Bean implements Serializable {
 	@Column(name = "name")
 	private String name;
 	
+
 	
 	
+
+
 
 	public Long getId() {
 		return id;

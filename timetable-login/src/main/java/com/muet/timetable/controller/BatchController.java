@@ -1,5 +1,6 @@
 package com.muet.timetable.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,9 +27,13 @@ import com.muet.timetable.beans.Batch;
 import com.muet.timetable.beans.Day;
 import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.Faculty;
+import com.muet.timetable.beans.Semester;
+import com.muet.timetable.beans.User;
 import com.muet.timetable.daoImpl.BatchDAOImpl;
 import com.muet.timetable.daoImpl.DayDAOImpl;
 import com.muet.timetable.daoImpl.DepartmentDAOImpl;
+import com.muet.timetable.daoImpl.SemesterDAOImpl;
+import com.muet.timetable.daoImpl.UserDAOImpl;
 
 @Controller
 @RequestMapping("/batch")
@@ -38,10 +43,15 @@ public class BatchController {
 	@Autowired
 	BatchDAOImpl batchDAOImpl;
 
+	@Autowired
+	UserDAOImpl userDAO;
+
 	
 	@Autowired
 	DepartmentDAOImpl deptDAOImpl;
-	
+
+	@Autowired
+	SemesterDAOImpl semesterDAOImpl;
 	
 	@RequestMapping("")
 	public String DayPage(Model modele) {
@@ -50,17 +60,29 @@ public class BatchController {
 	}
 
 	@PostMapping("/getall")
-	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
-		Pageable pageable = new PageRequest(page, 4, Direction.ASC, "id");
-		
-		return ResponseEntity.ok(batchDAOImpl.getAllRecords(pageable));
+	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page,Principal principal) {
+		Pageable pageable = new PageRequest(page, 10, Direction.ASC, "id");
+		Department department=userDAO.findByUsername(principal.getName()).getDepartment();
+        
+		return ResponseEntity.ok(batchDAOImpl.getAllRecords(department,pageable));
 
 	}
 	
 	@PostMapping("/getList")
-	public ResponseEntity<?> getList() {
-		ModelAndView model = new ModelAndView("batch-page");
-		return ResponseEntity.ok(batchDAOImpl.getAllRecords());
+	public ResponseEntity<?> getList(@RequestParam(name = "deptId") long  deptId) {
+		return ResponseEntity.ok(batchDAOImpl.getAllRecordsByDept(deptDAOImpl.getRecordById(deptId)));
+
+	}
+	
+	
+	
+	
+	
+	@PostMapping("/getListByDept")
+	public ResponseEntity<?> getListByDepartment(Principal principal) {
+		User user=userDAO.findByUsername(principal.getName());
+		Department department=deptDAOImpl.getRecordById(user.getDepartment().getId());
+		return ResponseEntity.ok(batchDAOImpl.getAllRecordsByDept(department));
 
 	}
 
@@ -68,14 +90,16 @@ public class BatchController {
 	public ResponseEntity<?> getOne(@ModelAttribute Batch batch, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
 
-		System.out.println(batchDAOImpl.getRecordById(batch.getId()).toString());
 		return ResponseEntity.ok(batchDAOImpl.getRecordById(batch.getId()));
 
 	}
 
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@ModelAttribute Batch batch, BindingResult bindingResult,
-			HttpServletRequest httpServletRequest) {
+			HttpServletRequest httpServletRequest,Principal principal) {
+		
+		Department department = userDAO.findByUsername(principal.getName()).getDepartment();
+		
 		Date date3 = Calendar.getInstance().getTime();
 	    SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
 
@@ -88,7 +112,7 @@ public class BatchController {
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
 	    }
-		
+	    batch.setDept(department);
 	    batch.setCreatedAt(date);
 	    batch.setUpdatedAt(date);
 	    batch.setCreatedBy(0);
@@ -101,12 +125,16 @@ public class BatchController {
 
 	@PostMapping("/update")
 	public ResponseEntity<?> update(@ModelAttribute Batch batch, BindingResult bindingResult,
-			HttpServletRequest httpServletRequest) {
+			HttpServletRequest httpServletRequest,Principal principal) {
 		Batch updatedbatch = batchDAOImpl.getRecordById(batch.getId());
+		Semester updatedsemester =semesterDAOImpl.getRecordById(batch.getCurrentSemester().getId());
+		//System.out.println("batch.getCurrentSemester(): "+batch.getCurrentSemester().getId());
+		
 		updatedbatch.setName(batch.getName());
 		updatedbatch.setYear(batch.getYear());
-		Department dp =deptDAOImpl.getRecordById(batch.getDept().getId());
-         updatedbatch.setDept(dp);
+		updatedbatch.setCurrentSemester(updatedsemester);
+		Department department = userDAO.findByUsername(principal.getName()).getDepartment();
+         updatedbatch.setDept(department);
 		batchDAOImpl.updateRecord(updatedbatch);
 		return ResponseEntity.ok("OK");
 

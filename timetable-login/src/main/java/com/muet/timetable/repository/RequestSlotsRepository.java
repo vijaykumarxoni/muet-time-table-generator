@@ -10,11 +10,12 @@ import com.muet.timetable.beans.Batch;
 
 import com.muet.timetable.beans.Department;
 import com.muet.timetable.beans.RequestSlots;
+import com.muet.timetable.beans.User;
 
 
 public interface RequestSlotsRepository extends PagingAndSortingRepository<RequestSlots, Long> {
 	
 	
-	//@Query("SELECT e FROM Batch e WHERE e.dept=:dept AND e.active=1 ")
-	  // List<Batch> getAllRecordsByDept (@Param("dept") Department department);
+		@Query("SELECT e FROM RequestSlots e WHERE e.user=:user AND e.active=1 ")
+	   List<RequestSlots> getAllRecordsByUser (@Param("user") User user );
 }

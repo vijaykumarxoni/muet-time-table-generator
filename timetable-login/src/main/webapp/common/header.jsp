@@ -15,7 +15,7 @@
 			<li>
 				<div class="navbar-header">
 					<a href="javascript:void(0);" class="bars"></a> <a
-						class="navbar-brand" href="index.html"><img
+						class="navbar-brand" href="/"><img
 						src="assets/images/logo.svg" width="30" alt="Oreo"><span
 						class="m-l-10">MUET Time Table Automation System</span></a>
 				</div>
@@ -110,23 +110,13 @@
 					</li>
 					<li class="footer"><a href="javascript:void(0);">View All</a></li>
 				</ul></li>
-			<li class="dropdown"><a href="javascript:void(0);"
-				class="dropdown-toggle" data-toggle="dropdown" role="button"><i
+			<li class="dropdown"><a href="settings"
+				class="" data-toggle="" role="button"><i
 					class="zmdi zmdi-settings"></i>  Settings
 					<div class="notify">
 						<span class="heartbit"></span><span class="point"></span>
 					</div> </a>
-				<ul class="dropdown-menu pullDown">
-					<li class="body">
-						
-					</li>
-					<li class="footer"><a href="settings">Time Table Settings</a>
-					</li>
-					<li class="footer"><a href="">System Setup</a>
-					</li>
-					</li>
-					
-				</ul></li>
+				</li>
 			
 			
 			

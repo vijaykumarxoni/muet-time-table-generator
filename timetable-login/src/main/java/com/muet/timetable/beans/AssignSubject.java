@@ -40,6 +40,12 @@ public class AssignSubject extends Bean implements Serializable {
 	
 	@NotNull
 	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "department_id",referencedColumnName="id")
+	private Department department;
+	
+	
+	@NotNull
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "teacher_id",referencedColumnName="id")
 	private Teacher teacher;
 	
@@ -56,6 +62,18 @@ public class AssignSubject extends Bean implements Serializable {
 	public void setSection(Section section) {
 		this.section = section;
 	}
+	
+	
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+
 
 	@NotNull
 	@ManyToOne(cascade = CascadeType.MERGE)

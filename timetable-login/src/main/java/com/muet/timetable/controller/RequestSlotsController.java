@@ -79,6 +79,16 @@ public class RequestSlotsController {
 		return ResponseEntity.ok(requestSlotsDAOImpl.getAllRecords());
 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@PostMapping("/get")
 	public ResponseEntity<?> getOne(@ModelAttribute NotificationDetails notificationdetails, BindingResult bindingResult,
@@ -86,6 +96,22 @@ public class RequestSlotsController {
 		return ResponseEntity.ok(requestSlotsDAOImpl.getRecordById(notificationdetails.getId()));
 
 	}
+	
+	
+	@PostMapping("/deactive")
+	public ResponseEntity<?> setDeactive(@ModelAttribute NotificationDetails notificationdetails, BindingResult bindingResult,
+			HttpServletRequest httpServletRequest) {
+		
+		RequestSlots requestSlots=requestSlotsDAOImpl.getRecordById(notificationdetails.getId());
+		requestSlots.setActive(0);
+		requestSlotsDAOImpl.updateRecord(requestSlots);
+		
+		return ResponseEntity.ok("OK");
+
+	}
+	
+	
+	
 
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@ModelAttribute RequestSlots requestSlots, BindingResult bindingResult,

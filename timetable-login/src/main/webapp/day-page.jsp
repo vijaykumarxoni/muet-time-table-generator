@@ -1,3 +1,7 @@
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!doctype html>
@@ -12,7 +16,7 @@
 <meta name="description"
 	content="Responsive Bootstrap 4 and web Application ui kit.">
 
-<title>:: MUET University Admin ::</title>
+<title>Working Days:: MUET Timetable</title>
 <!-- Favicon-->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet"
@@ -201,18 +205,19 @@
 	<!-- Overlay For Sidebars -->
 	<div class="overlay"></div>
 	<!-- Top Bar -->
-   <jsp:include page="common/header.jsp"></jsp:include>
-	
-	
-	
-	
+	<c:choose>
+  <c:when test="${request =='SuperAdmin'}">
+	  <jsp:include page="super_common/header.jsp"></jsp:include>
+	  <jsp:include page="super_common/left-bar.jsp"></jsp:include>
+	  <jsp:include page="super_common/right-bar.jsp"></jsp:include>
+
+  </c:when>
+  <c:otherwise>
+  	<jsp:include page="common/header.jsp"></jsp:include>
 	<jsp:include page="common/left-bar.jsp"></jsp:include>
-	
-		<!-- Right Sidebar -->
-	
-		<jsp:include page="common/right-bar.jsp"></jsp:include>
-		<jsp:include page="common/chat-box.jsp"></jsp:include>
-	
+	<jsp:include page="common/right-bar.jsp"></jsp:include>
+  </c:otherwise>
+</c:choose>
 	
 
 	<!-- Main Content -->
@@ -222,17 +227,10 @@
 			<div class="row">
 				<div class="col-lg-7 col-md-6 col-sm-12">
 					<h2>
-						Days <small>Welcome to MUET Time Table</small>
+						Days 
 					</h2>
 				</div>
-				<div class="col-lg-5 col-md-6 col-sm-12">
-					<ul class="breadcrumb float-md-right">
-						<li class="breadcrumb-item"><a href="index.html"><i
-								class="zmdi zmdi-home"></i> MUET</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0);">App</a></li>
-						<li class="breadcrumb-item active">Day</li>
-					</ul>
-				</div>
+			
 			</div>
 		</div>
 		<div class="container-fluid">
@@ -242,12 +240,7 @@
 					<div class="card action_bar">
 						<div class="body">
 							<div class="row clearfix">
-								<div class="col-lg-1 col-md-2 col-3">
-									<div class="checkbox inlineblock delete_all">
-										<input id="deleteall" type="checkbox"> <label
-											for="deleteall"> All </label>
-									</div>
-								</div>
+								
 								<div class="col-lg-5 col-md-5 col-6">
 									<div class="input-group search">
 										<input type="text" class="form-control"

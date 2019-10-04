@@ -53,6 +53,7 @@ public class SemesterController {
 	
 	@PostMapping("/getList")
 	public ResponseEntity<?> getList() {
+		
 		return ResponseEntity.ok(semesterDAOImpl.getAllRecords());
 
 	}

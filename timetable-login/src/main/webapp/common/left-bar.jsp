@@ -13,7 +13,7 @@
 <body>
 
 <!-- Left Sidebar -->
-	<aside id="leftsidebar" class="sidebar">
+	<aside id="leftsidebar" class="sidebar"   >
 		<ul class="nav nav-tabs">
 			
 			
@@ -21,8 +21,10 @@
 		<div class="tab-content">
 			<div class="tab-pane stretchRight active" id="dashboard">
 				<div class="menu">
+				<h5>Department Admin</h5>
 					<ul class="list">
 						<li>
+						
 							<div class="user-info">
 								<div class="image">
 									<a href="profile.html"><img
@@ -35,18 +37,28 @@
 							</div>
 						</li>
 						<li class="header">MAIN</li>
-						<li class="active open"><a href=""><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+						<li class="active open"><a href="http://localhost:8080"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
 						
 						<c:if test="${not empty batchs}">
 						<li class="header">Batches</li>
     					<c:forEach items="${batchs}" var="batchs">
-    					<li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts-alt"></i><span>${batchs.name}</span> </a>
+    					<li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts-alt"></i><span>${batchs.name} => (${batchs.currentSemester.name})</span> </a>
     					<ul class="ml-menu">
     						<c:forEach items="${batchs.sections}" var="sections">
 						
-                       				    <li><a href="timetable?batch=${batchs.id}&section=${sections.id}">${sections.name}</a></li>
+                       				    	<li><a href="javascript:void(0);" class="menu-toggle"><span>${sections.name}</span> </a>
+    										<ul class="ml-menu">
+                       				    		<c:forEach items="${semesters}" var="sem">
+                       				    		
+                       								<a href="generatetimetable?batch=${batchs.id}&section=${sections.id}&semester=${sem.id}"            >${sem.name} </a>			    		
+                       				    		</c:forEach>
+                       				    	</ul>
+                       				    
+                       				    
+                       				    </li>
                        		</c:forEach>
                         </ul>
+                        
                     </li>
        						
 						</c:forEach>

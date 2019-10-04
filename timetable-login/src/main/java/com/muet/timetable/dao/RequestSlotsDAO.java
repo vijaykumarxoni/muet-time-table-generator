@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 
 import com.muet.timetable.beans.RequestSlots;
+import com.muet.timetable.beans.User;
 
 public interface RequestSlotsDAO {
 public Page<RequestSlots> getAllRecords(Pageable pageable);
@@ -20,6 +21,8 @@ public Page<RequestSlots> getAllRecords(Pageable pageable);
 	public int deleteRecord(RequestSlots requestSlots);
 	
 	public List<RequestSlots> getAllRecords();
+	
+	public List<RequestSlots> getAllRecordsByUser(User u);
 	
 
 	

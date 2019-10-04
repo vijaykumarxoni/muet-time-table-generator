@@ -12,7 +12,7 @@
 <meta name="description"
 	content="Responsive Bootstrap 4 and web Application ui kit.">
 
-<title>:: MUET University Admin ::</title>
+<title>Faculty :: MUET Timetable</title>
 <!-- Favicon-->
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet"
@@ -201,17 +201,17 @@
 	<!-- Overlay For Sidebars -->
 	<div class="overlay"></div>
 	<!-- Top Bar -->
-   <jsp:include page="common/header.jsp"></jsp:include>
+   <jsp:include page="super_common/header.jsp"></jsp:include>
 	
 	
 	
 	
-	<jsp:include page="common/left-bar.jsp"></jsp:include>
+	<jsp:include page="super_common/left-bar.jsp"></jsp:include>
 	
 		<!-- Right Sidebar -->
 	
-		<jsp:include page="common/right-bar.jsp"></jsp:include>
-		<jsp:include page="common/chat-box.jsp"></jsp:include>
+		<jsp:include page="super_common/right-bar.jsp"></jsp:include>
+		
 	
 	
 
@@ -224,17 +224,10 @@
 			<div class="row">
 				<div class="col-lg-7 col-md-6 col-sm-12">
 					<h2>
-						Faculties <small>Welcome to MUET Time Table</small>
+						FACULTIES 
 					</h2>
 				</div>
-				<div class="col-lg-5 col-md-6 col-sm-12">
-					<ul class="breadcrumb float-md-right">
-						<li class="breadcrumb-item"><a href="index.html"><i
-								class="zmdi zmdi-home"></i> MUET</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0);">App</a></li>
-						<li class="breadcrumb-item active">Faculty</li>
-					</ul>
-				</div>
+				
 			</div>
 		</div>
 		<div class="container-fluid">
@@ -244,12 +237,7 @@
 					<div class="card action_bar">
 						<div class="body">
 							<div class="row clearfix">
-								<div class="col-lg-1 col-md-2 col-3">
-									<div class="checkbox inlineblock delete_all">
-										<input id="deleteall" type="checkbox"> <label
-											for="deleteall"> All </label>
-									</div>
-								</div>
+								
 								<div class="col-lg-5 col-md-5 col-6">
 									<div class="input-group search">
 										<input type="text" class="form-control"
@@ -258,7 +246,14 @@
 										</span>
 									</div>
 								</div>
+								
+								
 								<div class="col-lg-6 col-md-5 col-3 text-right">
+								<button type="button" id="showAddModel"
+										class="btn col-black btn-neutral d-none d-lg-inline-block d-md-inline-block"
+										data-toggle="modal" data-target="#defaultModal">
+										<i class="zmdi zmdi-plus-circle"></i>
+									</button>
 									<div
 										class="btn-group d-none d-lg-inline-block d-md-inline-block"
 										role="group">
@@ -280,18 +275,8 @@
 									</div>
 
 
-									<button type="button" id="showAddModel"
-										class="btn col-black btn-neutral d-none d-lg-inline-block d-md-inline-block"
-										data-toggle="modal" data-target="#defaultModal">
-										<i class="zmdi zmdi-plus-circle"></i>
-									</button>
-									<button type="button"
-										class="btn col-black btn-neutral d-none d-lg-inline-block d-md-inline-block">
-										<i class="zmdi zmdi-archive"></i>
-									</button>
-									<button type="button" class="btn col-black btn-neutral">
-										<i class="zmdi zmdi-delete"></i>
-									</button>
+									
+									
 								</div>
 							</div>
 						</div>
@@ -304,7 +289,7 @@
 										<table class="table table-hover m-b-0 c_list">
 											<thead>
 												<tr>
-													<th>#</th>
+													<th>Faculty ID#</th>
 													<th>Name</th>
 													<th data-breakpoints="xs">Action</th>
 												</tr>

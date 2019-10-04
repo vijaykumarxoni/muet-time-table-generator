@@ -49,7 +49,6 @@ public class SectionController {
 	@PostMapping("/getall")
 	public ResponseEntity<?> getAll(@RequestParam(defaultValue = "0") int page) {
 		Pageable pageable = new PageRequest(page, 4, Direction.ASC, "id");
-		
 		return ResponseEntity.ok(sectionDAOImpl.getAllRecords(pageable));
 
 	}
@@ -64,10 +63,8 @@ public class SectionController {
 	public ResponseEntity<?> getOne(@ModelAttribute Batch batch, BindingResult bindingResult,
 			HttpServletRequest httpServletRequest) {
 		
-		System.out.println("batch id: "+batch.getId());
-
+		System.out.println("batch"+ batch.getId());
 		
-		System.out.println("batch name: "+sectionDAOImpl.getAllRecordsByBatch(batch).get(0).getName());
 		return ResponseEntity.ok(sectionDAOImpl.getAllRecordsByBatch(batch));
 
 	}
